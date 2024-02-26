@@ -1154,6 +1154,49 @@ abline(v=0,h=0)")
 }
 
 
+mllab4 = function(){
+
+
+  code = cat("#Title: Logistic Regression
+
+library(mlbench)
+library(MASS)
+library(pROC)
+data('PimaIndiansDiabetes2')
+head(PimaIndiansDiabetes2)
+#Descriptive statistics
+summary(PimaIndiansDiabetes2)
+#Removing missing values
+newdata=na.omit(PimaIndiansDiabetes2)
+summary(newdata)
+
+set.seed(12)
+data1=sort(sample(nrow(newdata),nrow(newdata)*0.7))
+data1
+#data1 consists of row numbers only and not the actual data
+
+#Splitting into train and test data set
+train=newdata[data1,]
+test= newdata[-data1,]
+
+#Dimensions of the train and test sets
+dim(train)
+dim(test)
+
+#To fit a logistic regression model with the train set
+log_model=glm(diabetes~.,data=train, family=binomial(link='logit'))
+summary(log_model)
+
+#to predict using logistic regression model, probabilities obtained
+log_predictions=predict(log_model,test,type='response')
+head(log_predictions,10)
+
+log_predictions_rd=ifelse(log_predictions>0.5,1,0)
+head(log_predictions_rd,10)")
+  return(cat(code))
+
+}
+
 
 
 tslab1 = function(){
@@ -1372,3 +1415,4 @@ acf(y1)
 
 }
 
+mllab4()
