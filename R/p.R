@@ -1327,3 +1327,48 @@ plot(fit)
 
 }
 
+
+
+tslab4 = function(){
+
+
+  code = cat("# Auto Regressive Model for Stationary Time Series
+
+set.seed(0)
+
+'yt = 0.5(yt-1) + et'
+y = rnorm(250,0,2); y
+y1 = numeric(250); y1
+y1[1] = y[1]
+for (i in 2:250) {
+  y1[i] = 0.5*y1[i-1]+y[i]
+  }
+plot.ts(y1)
+acf(y1)
+
+'yt = 0.7(yt-1) + et'
+y = rnorm(250,0,2); y
+y1 = numeric(250); y1
+y1[1] = y[1]
+for (i in 2:250) {
+  y1[i] = 0.7*y1[i-1]+y[i]
+}
+plot.ts(y1)
+acf(y1)
+
+'yt = 0.7(yt-1) 0.3(yt-2)+ et'
+y = rnorm(250,0,2); y
+y1 = numeric(250); y1
+y1[1] = y[1]
+y1[2] = y[2]
+for (i in 3:250) {
+  y1[i] = 0.7*y1[i-1]+0.3*y1[i-2]+y[i]
+}
+plot.ts(y1)
+acf(y1)
+
+")
+  return(cat(code))
+
+}
+
