@@ -738,6 +738,114 @@ summary(mle)")
 }
 
 
+silab6 = function(){
+
+
+  code = cat("## Methods of moments
+
+#gamma
+set.seed(0)
+x = rgamma(1000,5,7)
+
+#calculate MoM estimates
+mu_1 = mean(x)
+mu_2 = mean(x^2)
+mu_1 ^ 2 / (mu_2 - mu_1 ^ 2)
+
+#binomial
+set.seed(0)
+n = 10000
+m = 10
+p = 0.5
+x = rbinom(n,10,p)
+mu_1 = mean(x); mu_1
+
+p_bar = mu_1/m
+p_bar
+
+#poisson
+set.seed(0)
+lam = 2
+x = rpois(20,lam)
+mu_1 = mean(x);mu_1
+
+#normal
+set.seed(0)
+mu = 5
+sd = 0.2
+x = rnorm(20,mean = mu, sd = sd)
+mu_1 = mean(x);mu_1
+
+mu_2 = sqrt(mean(x^2)-mu_1^2)
+mu_2
+
+#exponential
+set.seed(0)
+rate = 1.5
+x = rexp(100, rate = rate)
+mu_1 = 1/mean(x);mu_1
+
+#second moment has been calculated about the mean
+
+library(Rlab)
+############################################################################
+########################## UTILITY FUNCTIONS ###############################
+############################################################################
+# The basic idea behind this form of the method is to:
+#   (1) Equate the first sample moment about the origin M1=1n∑i=1nXi=X¯ to the first theoretical moment E(X).
+#   (2) Equate the second sample moment about the mean M∗2=1n∑i=1n(Xi−X¯)2 to the second theoretical moment about the mean E[(X−μ)2].
+
+# First moment has been calculated about the origin
+firstMomentCalc <- function(input_data){
+  temp = 0
+  for (i in input_data){
+    temp = temp + i
+  }
+  return (temp/length(input_data))
+}
+
+# Second moment has been calculated about the mean
+secondMomentCalc <- function(input_data){
+  temp = 0
+  for (i in input_data){
+    temp = temp + (i)^2  #second moment about origin
+  }
+  return (temp/length(input_data))
+}
+
+############################################################################
+######### METHOD OF MOMENTS FUNCTIONS FOR DIFFERENT DISTRIBUTIONS ##########
+############################################################################
+
+# Binomial Distribution
+set.seed(0)
+n = 10000
+m = 100
+p = 0.5
+input_data = rbinom(n,m,p)
+mu_hat = mean(input_data);mu_hat
+
+var_hat = secondMomentCalc(input_data)
+p_hat = (mu_hat - var_hat)/mu_hat
+n_hat = mu_hat^2/((mu_hat - var_hat))
+print(paste('Estimated parameter 1 through MOM:', p_hat))
+
+print(paste('Estimated parameter 2 through MOM:', n_hat))
+
+# Normal Distribution
+set.seed(0)
+mu = 0
+sd = 1
+input_data = rnorm(10000,mean = mu, sd = sd)
+# Estimating the parameters
+mu_hat = firstMomentCalc(input_data)
+var_hat = secondMomentCalc(input_data)
+print(paste('Estimated parameter 1 through MOM:', mu_hat))
+print(paste('Estimated parameter 2 through MOM:', var_hat))
+")
+  return(cat(code))
+
+}
 
 
 sipracticelab1 = function(){
@@ -1415,4 +1523,3 @@ acf(y1)
 
 }
 
-mllab4()
