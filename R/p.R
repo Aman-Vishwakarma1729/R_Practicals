@@ -848,6 +848,111 @@ print(paste('Estimated parameter 2 through MOM:', var_hat))
 }
 
 
+silab7 = function(){
+
+
+  code = cat("## Least Square Estimation
+
+x = c(1,2,3,4,5)
+y = c(1,2,1.3,3.75,2.25)
+
+plot(y~x,xlab = 'X',ylab = 'Y',main = 'Linear Regression',col = 'brown', pch = 20, cex = 2)
+
+L1 = lm(y~x)
+L1
+
+summary(L1)
+
+y_cap = L1$coefficients[1]+L1$coefficients[2]*x
+y_cap
+
+error = y-y_cap
+error
+
+s_square = sum(error^2)/(length(x)-2)
+s_square
+
+S = sqrt(s_square)
+S
+
+points(x,y_cap,xlab = 'X',ylab = 'Y_cap',main = 'LINEAR REGRESSION', pch = 20, cex = 2 )
+
+lines(x,y_cap,xlab = 'X',ylab = 'Y_cap',main = 'LINEAR REGRESSION', pch = 20, cex = 2 )
+
+
+x = c(40,20,25,20,30,50,40,20,50,40,25,50)
+y = c(385,400,395,365,475,440,490,430,560,525,480,510)
+
+plot(y~x,xlab = 'X',ylab = 'Y',main = 'Linear Regression',col = 'brown'', pch = 20, cex = 2)
+
+L1 = lm(y~x)
+L1
+
+summary(L1)
+
+y_cap = L1$coefficients[1]+L1$coefficients[2]*x
+y_cap
+
+error = y-y_cap
+error
+
+s_square = sum(error^2)/(length(x)-2)
+s_square
+
+S = sqrt(s_square)
+S
+
+points(x,y_cap,xlab = 'X',ylab = 'Y_cap',main = 'LINEAR REGRESSION', pch = 20, cex = 2 )
+
+lines(x,y_cap,xlab = 'X',ylab = '_cap',main = 'LINEAR REGRESSION', pch = 20, cex = 2 )
+
+
+x2 = c(20,26,41,55,60,67,75,79,70,55,45,33)
+x1 = c(23,21,24,25,24,26,25,25,24,25,25,23)
+y = c(210,206,260,244,271,285,270,265,234,241,258,230)
+library(scatterplot3d)
+
+data = data.frame(x2,x1,y)
+data
+
+multireg = lm(y~(x2+x1))
+
+summary(multireg)
+
+data = with(trees,scatterplot3d(x2,x1,y,pch = 16,highlight.3d = TRUE,angle = 45))
+
+fit = lm(y~x2+x1,data = trees)
+
+data$plane3d((fit))
+
+
+
+y_cap = multireg$coefficients[1]+multireg$coefficients[2]*x2+multireg$coefficients[3]*x1
+
+error = y-y_cap
+error
+
+p = 470
+pc = 0.99
+z.oneproportion = function(p,P,n)
+{
+  z_one = (p-P)/(sqrt(p*(1-P)/n))
+  return(z_one)
+}
+
+z1 = z.oneproportion(0.94,0.99,500)
+print(z1)
+
+z_cri = qnorm(0.99,0.1)
+print(z_cri)
+
+")
+  return(cat(code))
+
+}
+
+
+
 sipracticelab1 = function(){
 
 
@@ -1523,3 +1628,4 @@ acf(y1)
 
 }
 
+silab7()
