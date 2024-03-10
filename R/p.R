@@ -1628,4 +1628,34 @@ acf(y1)
 
 }
 
-silab7()
+
+tslab5 = function(){
+
+
+  code = cat("#Auto-Regressive Integrated Moving Average for Non-Stationary Time Series
+
+library(forecast)
+plot(BJsales,main='Graph without forecasting',col.main='darkgreen')
+
+fit=auto.arima(BJsales)
+forecastedValues=forecast(fit,10)
+
+#Print the forecasted values
+print(forecastedValues)
+plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
+
+
+#2)
+plot(EuStockMarkets[,'DAX'],main='Graph without forecasting',col.main='darkgreen')
+fit=auto.arima(EuStockMarkets[,'DAX'])
+forecastedValues=forecast(fit,10)
+
+#Print the forecasted values
+print(forecastedValues)
+plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
+
+
+")
+  return(cat(code))
+
+}
