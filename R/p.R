@@ -1411,6 +1411,71 @@ head(log_predictions_rd,10)")
 }
 
 
+mllab5 = function(){
+
+
+  code = cat("library(grid)
+library(dplyr)
+library(scales)
+library(ggplot2)
+library(Deriv)
+
+#original formula
+Formula = function(x) (x-2)^2 + 2
+
+#visualize the function and the optimal solution
+ggplot(data.frame(x=c(0,4)),aes(x))+ stat_function(fun = Formula)+ geom_point(data=data.frame(x=2,y=Formula(2)),aes(x,y),col='blue',size=3)+ggtitle(expression((x-2)^2+2))
+
+#First derivative of the formula above
+Derivative=Deriv(Formula,'x')
+Derivative
+
+#Define the alpha value i.e. learning rate
+learning_rate=0.2
+
+#define the initial value
+x.old=2.2
+(iteration=data.frame(x=x.old,y=Formula(x.old)))
+
+#Define the alpha value i.e. learning rate
+learning_rate=0.2
+
+#define the initial value
+x.old=2.2
+(iteration=data.frame(x=x.old,y=Formula(x.old)))
+
+#First iteration
+x.new=x.old-learning_rate*Derivative(x.old)
+#output
+rbind(iteration,c(x.new,Formula(x.new)))
+
+#Define the epsilon value and the maximum iterations allowed
+epsilon=0.05
+step=2
+iteration=10
+
+#record the x and y values; add the initial guess
+xtrace=list();ytrace=list();
+xtrace[[1]]=x.old; ytrace[[1]]=Formula(x.old);
+xtrace[[2]]=x.new; ytrace[[2]]=Formula(x.new);
+cbind(xtrace,ytrace)
+
+while(abs(x.new-x.old) > epsilon & step<=iteration){
+  step=step+1
+  x.old=x.new
+  x.new=x.old-learning_rate*Derivative(x.old)
+  #record keeping
+  xtrace[[step]]=x.new
+  ytrace[[step]]=Formula(x.new)
+}
+
+record=data.frame(x=do.call(rbind,xtrace),y=do.call(rbind,ytrace))
+record")
+  return(cat(code))
+
+}
+
+
 
 tslab1 = function(){
 
@@ -1659,3 +1724,5 @@ plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
   return(cat(code))
 
 }
+
+
