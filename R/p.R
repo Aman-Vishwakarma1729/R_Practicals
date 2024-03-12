@@ -1476,6 +1476,74 @@ record")
 }
 
 
+mllab6 = function(){
+
+
+  code = cat("## Clustering (K-mean and Hierarchical)
+
+library(tidyverse)
+library(cluster)
+library(ggplot2)
+library(factoextra)
+
+# K-mean
+df = USArrests; df; dim(df)[1]; sum(is.na(df)) ## data-frame and size of data and number of missing values
+df = na.omit(df); df
+df = scale(df); df
+head(df)
+k2 = kmeans(df,centers = 2,nstart = 25);k2
+str(k2)
+fviz_cluster(k2,data=df)  ## Visualization
+k3 = kmeans(df,center=3,nstart=23);k2
+k4 = kmeans(df,center=4,nstart=23);k3
+k5 = kmeans(df,center=5,nstart=23);k4
+# plot to compare
+p1 = fviz_cluster(k2,geom='point',data=df)+ggtitle('k=2');p1
+p2 = fviz_cluster(k3,geom='point',data=df)+ggtitle('k=3');p2
+p3 = fviz_cluster(k4,geom='point',data=df)+ggtitle('k=4');p3
+p4 = fviz_cluster(k5,geom='point',data=df)+ggtitle('k=5');p1
+library(gridExtra)
+grid.arrange(p1,p2,p3,p4,nrow=2)
+# Getting optimal number of cluster centers i.e optimal k value
+set.seed(123)
+fviz_nbclust(df,kmeans,method = 'wss') ## Within sum of square
+set.seed(123)
+fviz_nbclust(df,kmeans,method = 'silhouette') ## Based on silhouette score
+set.seed(123)
+gap_stat = clusGap(df,FUNcluster = kmeans,nstart=25,K.max = 10,B=50)
+fviz_gap_stat(gap_stat)  ## Based on gap_stat
+set.seed(123)
+final=kmeans(df,4,nstart = 25)
+print(final)
+fviz_cluster(final,data=df)
+
+## Hierarchical Clustering (AGNES)
+library(tidyverse)
+library(cluster)
+library(factoextra)
+
+df = iris; df
+hca1 = agnes(df,method='complete');hca1
+pltree(hca1,cex=0.6,hang=-1,main='Dendrofram of AGNES')
+## Cut in to 3 groups
+dvcut = cutree(as.hclust(hca1),k=3);dvcut
+table(dvcut)
+hca2 = agnes(df,method='single');hca2
+pltree(hca2,cex=0.6,hang=-1,main='Dendrofram of AGNES')
+## Cut into 3 groups
+dvcut = cutree(as.hclust(hca2),k=3);dvcut
+table(dvcut)
+hca3 = agnes(df,method='average');hca3
+pltree(hca3,cex=0.6,hang=-1,main='Dendrofram of AGNES')
+## Cut into 3 groups
+dvcut = cutree(as.hclust(hca3),k=3);dvcut
+table(dvcut)
+")
+  return(cat(code))
+
+}
+
+
 
 tslab1 = function(){
 
@@ -1726,3 +1794,4 @@ plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
 }
 
 
+mllab6()
