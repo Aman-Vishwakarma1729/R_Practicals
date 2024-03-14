@@ -265,12 +265,261 @@ library(ggplot2)
 ggplot()+ geom_point(aes(x=pressure1$temperature,y=pressure1$pressure),color='red')+
   geom_line(aes(x=pressure1$temperature,y=predict(poly_reg,newdata = pressure1)),col='blue')+ggtitle('Polynomial Regression Model')+xlab('Temperature')+ylab('Pressure')
 summary(poly_reg)
-")
+
+
+# Experiment : Residual analysis and forecast accuracy for a given data set
+
+# aim : To perform residual analysis and forecast accuracy for a given data set.
+
+
+library(UsingR)
+library(broom)
+library(ggplot2)
+data(diamond)
+mydata <- diamond
+
+plot(mydata$carat , mydata$price ,ylab = 'price', xlab = 'carat')
+
+fit = lm(mydata$price~mydata$carat)
+fit
+summary(fit)
+
+abline(fit,col = 'red')
+
+model.diag.metrics = augment(fit)
+
+head(model.diag.metrics)
+
+ggplot(model.diag.metrics,aes(mydata$carat,mydata$price)) +
+  geom_point()+
+  stat_smooth(method = lm , se= F) +
+  geom_segment(aes(xend=mydata$carat,yend = .fitted),color = 'red',size =0.5)
+
+
+#Residuals vs Fitted.
+plot(fit,1)
+
+# Normal Q-Q
+plot(fit,2)
+
+#Scale-Location
+plot(fit,3)
+
+# Cook’s Distance Plot
+plot(fit,4)
+
+#Residuals vs Leverage
+plot(fit,5)
+
+#Forecast Accuracy for a Given Data Set
+
+library(forecast)
+data('AirPassengers')
+class(AirPassengers)
+frequency(AirPassengers)
+series <- AirPassengers
+head(series,10)
+plot(series, col ='darkblue',ylab = 'passegner on airplane')
+boxplot(split(series,cycle(series)),names = month.abb,col = 'gold')
+
+# training set
+# use data from 1949 to 1956 for forecasting
+train_set = window(series,start = 1949 , end =c(1956,12))
+train_set
+test_set = window(series, start = 1957,end = c(1960,12))
+test_set
+
+plot(train_set,main='AirPassengers' ,ylab = '' , xlab = 'Months')
+
+# plot forecasting for 4 years according to four methods
+lines(meanf(train_set,h=48)$mean, col = 4)
+lines(rwf(train_set,h=48)$mean,col =2)
+lines(rwf(train_set,drift = T , h=48)$mean,col =3)
+lines(snaive(train_set , h=48)$mean,col =5)
+
+legend('topleft',lty = 1, col = c(4,2,3,5),
+       legend = c('Mean_method', 'Naive method','Drift method','Seasonal naive method'),bty = 'n')
+
+
+# test set
+lines(test_set , col = 'red')
+
+# accuracy for forecasting of train_set (forecasted data) on test_set (original data used as test set)
+# the best model had the lowest error (particularly the MAPE, Mean absolute percentage error)
+
+# mean method
+accuracy(meanf(train_set,h=48),test_set)
+
+#naive method
+accuracy(rwf(train_set,h=48),test_set)
+
+#drift method
+accuracy(rwf(train_set,drift = T,h=48),test_set)
+
+#Seasonal naive method
+accuracy(snaive(train_set,h=48),test_set)
+
+# plot test set only with the predictions
+# calculate the forecasting
+
+train.set.mean = meanf(train_set , h = 48)$mean
+train.set.naive = rwf(train_set , h = 48)$mean
+train.set.drift = rwf(train_set ,drift = T, h = 48)$mean
+train.set.snaive = snaive(train_set , h = 48)$mean
+
+# plot the test set
+plot(test_set , main = 'AirPassengers' , ylab = '', xlab = 'Months', ylim = c(200,600))
+
+# plot forecasting for 4 years according to four methods
+lines(train.set.mean,col = 4)
+lines(train.set.naive,col = 2)
+lines(train.set.drift,col = 3)
+lines(train.set.snaive,col = 5)
+legend('topleft', lty = 1, col =c(4,2,3,5), legend = c('Mean method','Naive
+method','Drift method', 'Seasonal naïve method'),bty = 'n')")
   return(cat(code))
 
 }
 
 
+ralab4 = function(){
+
+  code = cat("
+  # Experiment: Validating Simple linear regression using t, F and p- test.
+
+data('cars')
+cars
+scatter.smooth(x = cars$speed,
+               y = cars$dist,
+               main = 'Dist vs Speed')
+
+# divide graph area in 2 columns
+par(mfrow=c(1,2))
+
+boxplot(cars$speed,
+        main='Speed',
+        sub=paste('Outlier rows: ',
+                  boxplot.stats(cars$speed)$out))
+
+boxplot(cars$dist,
+        main='Distance',
+        sub=paste('Outlier rows: ',
+                  boxplot.stats(cars$dist)$out))
+
+cor(cars$speed,cars$dist)
+
+linear_Model = lm(dist ~ speed, data=cars)
+linear_Model
+
+modelSummary=summary(linear_Model)
+modelSummary
+
+modelCoeffs=modelSummary$coefficients
+modelCoeffs
+
+n=nrow(cars)
+alpha=0.05
+beta.estimate=modelCoeffs['speed', 'Estimate']
+beta.estimate
+
+std.error=modelCoeffs['speed', 'Std. Error']
+std.error
+
+# Classical Approach
+t_value=beta.estimate/std.error
+t_value
+
+t_table=qt((alpha/2),n-2,lower.tail = F)
+t_table
+
+if(t_value>t_table)
+  print('reject the null hypothesis that the co-efficient of the predictor is zero') else
+    print('accept the null hypothesis')
+
+# p-value approach
+p_value=2*pt(-abs(t_value),df=nrow(cars)-ncol(cars))
+p_value
+
+f=summary(linear_Model)$fstatistic
+f
+
+f_table=qf(.95, df1=f[2], df2=f[3])
+f_table
+
+confint(linear_Model)
+
+############
+# EXERCISE #
+############
+
+library(datarium)
+data('marketing')
+head(marketing,10)
+
+scatter.smooth(x = marketing$youtube,
+               y = marketing$sales,
+               main = 'Youtube Marketing vs Sales')
+
+# divide graph area in 2 columns
+par(mfrow=c(1,2))
+
+boxplot(marketing$youtube,
+        main='Youtube',
+        sub=paste('Outlier rows: ',
+                  boxplot.stats(marketing$youtube)$out))
+
+boxplot(marketing$sales,
+        main='Sales',
+        sub=paste('Outlier rows: ',
+                  boxplot.stats(marketing$sales)$out))
+
+cor(marketing$youtube, marketing$sales)
+
+linear_Model = lm(sales ~ youtube, data=marketing)
+linear_Model
+
+modelSummary=summary(linear_Model)
+modelSummary
+
+modelCoeffs=modelSummary$coefficients
+modelCoeffs
+
+n=nrow(marketing)
+alpha=0.05
+beta.estimate=modelCoeffs['youtube', 'Estimate']
+beta.estimate
+
+std.error=modelCoeffs['youtube', 'Std. Error']
+std.error
+
+# Classical Approach
+t_value=beta.estimate/std.error
+t_value
+
+t_table=qt((alpha/2),n-2,lower.tail = F)
+t_table
+
+if(t_value>t_table)
+  print('reject the null hypothesis that the co-efficient of the predictor is zero') else
+    print('accept the null hypothesis')
+
+# p-value approach
+p_value=2*pt(-abs(t_value),df=nrow(marketing)-ncol(marketing))
+p_value
+
+f=summary(linear_Model)$fstatistic
+f
+
+f_table=qf(.95, df1=f[2], df2=f[3])
+f_table
+
+confint(linear_Model)
+
+
+")
+  return(cat(code))
+
+}
 
 
 silab1 = function(){
@@ -952,6 +1201,74 @@ print(z_cri)
 }
 
 
+silab8 = function(){
+
+
+  code = cat("### Testing of Hypothesis
+
+## t-test for single mean (small samples)
+
+#1
+alpha = 0.05
+x = c(7.07,7.00,7.10,6.97,7.00,7.03,7.01,7.01,6.98,7.08);x
+t.test(x,mu=7,alternative = 'two.sided')
+'Since p=0.1062 > aplha=0.05 we fail to reject null hypothesis'
+
+#2
+'To find out weather a new serum will arrest leukemia, 9 mice all with an advanced stage of the disease are selected.
+Five mice receive the treatment and 4 do not. Survival time in years, from the time the experiment commenced as follows
+alpha = 0.05 can serum said to be effective Assume that two population as normally distributed'
+
+alpha = 0.05
+treatments = c(2.1,5.3,1.4,4.6,0.9)
+no_treatment = c(1.9,0.5,2.8,3.1)
+t.test(treatments,no_treatment,alternative = 'greater',var.equal = TRUE)
+'Since p=0.2536 > aplha=0.05 we fail to reject null hypothesis'
+
+#3
+'The below given data represents the running times of films produced by two motion-picture companies. Test the hypothesis
+that the average running time of the films produced by company 2 exceeds the average running time of films produced by
+company 1 by 10 minutes against the one-sided alternative that the difference is less than 10 minutes. Use a 0.1 level
+of significance and assume the distribution to be approximately normal with unequal variance'
+
+alpha = 0.1
+c1 = c(102,86,98,109,92)
+c2 = c(81,165,97,134,92,87,114)
+t.test(c1,c2,mu=10,alternative='less',conf.level=0.90,var.equal = FALSE)
+'Since p=0.05085 <  aplha=0.1 we reject null hypothesis'
+
+#4
+alpha = 0.05
+mtcars_df = data.frame(mtcars);mtcars_df
+mpg.at = mtcars_df[mtcars$am == 0,]$mpg;mpg.at
+mpg.mt = mtcars_df[mtcars$am == 1,]$mpg;mpg.mt
+t.test(mpg.at,mpg.mt,alternative='two.sided',conf.level=0.95,var.equal = FALSE)
+'Since p=0.001374 <  aplha=0.05 we reject null hypothesis'
+
+#5
+'The below given data realte to the marks obtained by 11 students in 2 tests one held at the begining of a year
+and the othger at the end of the year after intensive coaching. Do the data indicate that student have
+benefitted from coaching'
+
+alpha = 0.05
+test1 = c(19,23,16,24,17,18,20,18,21,19,20)
+test2 = c(17,24,20,24,20,22,20,20,12,22,19)
+t.test(test1,test2,paired=TRUE,alternative='less',conf.level=0.95)
+'Since p=0.6942 >  aplha=0.05 we fail reject null hypothesis'
+
+## F-Test
+
+#1
+s1 = c(9,11,13,13,11,15,9,12,14)
+s2 = c(10,12,10,14,9,8,10)
+var.test(s1,s2,1)
+qf(0.95,7,6)")
+
+  return(cat(code))
+
+}
+
+
 
 sipracticelab1 = function(){
 
@@ -1111,6 +1428,7 @@ glue('({(xbar1-xbar2) - ME}, {(xbar1-xbar2) + ME})')
   return(cat(code))
 
 }
+
 
 
 
