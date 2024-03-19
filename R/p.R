@@ -1862,6 +1862,78 @@ table(dvcut)
 }
 
 
+mllab7 = function(){
+
+
+  code = cat("##Hierarchical Clustering-DIANA
+
+library(datasets)   #contains iris
+library(cluster)    #clustering algorithm
+library(factoextra)  #clustering algorithm & visual
+library(purrr)
+
+df = iris[,1:4]
+dv = diana(df,metric = 'euclidean', stand = T)
+print(dv)
+plot(dv)
+
+#cut into 3 groups:
+for (i in 2:5){
+  dvcut = cutree(as.hclust(dv), k = i)
+  print(table(dvcut))
+}
+
+
+##spectral clustering
+
+library(igraph)
+A = rbind(c(0,0.8,0.6,0,0.1,0),
+          c(0.8,0,0.8,0,0,0),
+          c(0.6,0.8,0,0.2,0,0),
+          c(0,0,0.2,0,0.8,0.7),
+          c(0.1,0,0,0.8,0,0.8),
+          c(0,0,0,0.7,0.8,0))
+
+A
+ig = graph_from_adjacency_matrix(A, mode = 'undirected', weighted = T)
+ig
+plot(ig,edge.label= E(ig)$weight)
+D = diag(apply(A,1,sum))
+D
+L = D-A;L
+
+eig_L = eigen(L, symmetric = T)
+eig_L$values
+
+plot(eig_L$values)
+eig_L$vectors
+k = 2
+z = eig_L$vectors[,5:6];z
+z[,c(1,2)] = z[,c(2,1)];z
+
+#Now for normalization
+denom = sqrt(apply(z^2,1,sum)) #denominator
+denom
+
+#denominator2: convert to a MATRIX
+denom2 = replicate(n = k, expr = denom)
+denom2
+
+#create the y matrix
+y = z/denom2; y
+plot(y)
+
+#Apply k-means ony:
+spec_clusters = kmeans(y,centers = 2, nstart = 100)
+spec_clusters$cluster
+spec_clusters$size
+spec_clusters$centers
+")
+  return(cat(code))
+
+}
+
+
 
 tslab1 = function(){
 
