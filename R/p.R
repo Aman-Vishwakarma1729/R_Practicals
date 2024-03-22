@@ -522,6 +522,134 @@ confint(linear_Model)
 }
 
 
+ralab7 = function(){
+
+  code = cat("
+  ## Experiment-7: Problem with multi-collinearity and determination of VIF (Variation Inflation Factor)
+
+'Aim: To perform the test pertaining to multicollinearity and determination of VIT for given dataset'
+
+library(tidyverse)
+mydata = mtcars%>%select(mpg,cyl,disp,hp,wt)
+head(mydata)
+
+model = lm(mpg~.,data = mydata);model
+
+# Using correlation
+library('corrplot')
+corrplot(cor(mydata),method='number')
+
+# Using VIF
+library(olsrr)
+ols_vif_tol(model)
+
+# Using Eigenvalue and Condition Index
+ols_eigen_cindex(model)
+")
+  return(cat(code))
+
+}
+
+
+ralab8 = function(){
+
+  code = cat("
+  ## Experiment-8: Diagnostic measures and outliers detection, Durbin Watson test, variable selection and model building
+
+'Aim: To perform diagnostic measures and ouliers detection, Durbin Watson testm variable selection and model building'
+
+data = ggplot2::mpg ; data
+head(data)
+
+nrow(data)
+ncol(data)
+hwy = data$hwy
+summary(hwy)
+
+hist(hwy)
+
+out = boxplot.stats(data$hwy)$out; out
+boxplot(data$hwy,ylab='hwy')
+mtext(paste('Outlier: ',paste(out,collapse = ',')))
+
+out_ind = which(data$hwy %in% c(out));out_ind
+data[out_ind,]
+
+# Durbin Watson test
+
+'H0: There is no correlation among the residuals'
+'H1: The residuals are auto-correlated'
+
+data('mtcars')
+head(mtcars)
+model = lm(mpg~disp+wt,data=mtcars);model
+library(lmtest)
+dwtest(model)
+
+# Variable selection and model building
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k1 = ols_step_all_possible(model)
+k1
+plot(k1)
+
+## Best subset regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k2 = ols_step_best_subset(model)
+k2
+plot(k2)
+
+## Step wise forward regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k3 = ols_step_forward_p(model,details = TRUE)
+k3
+plot(k3)
+
+## Step wise backward regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k4 = ols_step_backward_p(model,details = TRUE)
+k4
+plot(k4)
+
+## Mixed selection regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k5 = ols_step_both_p(model,details = TRUE)
+k5
+plot(k5)
+
+## Step wise AIC forward regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k6 = ols_step_forward_aic(model,details = TRUE)
+k6
+plot(k6)
+
+## Step wise AIC backward regression
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k7 = ols_step_backward_aic(model,details = TRUE)
+k7
+plot(k7)
+
+## Mixed selection regression using AIC
+
+model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
+k8 = ols_step_both_aic(model,details = TRUE)
+k8
+plot(k8)
+
+")
+  return(cat(code))
+
+}
+
+
+
+
 silab1 = function(){
 
   code = cat('dataset = iris
