@@ -647,7 +647,7 @@ plot(k8)
 
 }
 
-
+ralab8()
 
 
 silab1 = function(){
