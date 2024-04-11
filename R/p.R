@@ -522,6 +522,157 @@ confint(linear_Model)
 }
 
 
+ralab5 = function(){
+
+  code = cat("
+  #Developing CI and prediction interval for simple linear regression model and multiple regression model
+
+#Dataset:
+data(cars)
+cars
+
+#Linear model:
+lin_mod=lm(dist~speed,data=cars)
+lin_mod
+
+#Predicting for new values:
+new_speeds=data.frame(speed=c(13,20,25,10))
+new_speeds
+predict(lin_mod,newdata = new_speeds)
+
+#confidence interval
+predict(lin_mod,newdata = new_speeds, interval='confidence')
+
+pred_int = predict(lin_mod, interval = 'prediction')
+pred_int
+
+library(ggplot2)
+p = ggplot(cars, aes(speed,dist))+geom_point()+stat_smooth(method = lm)
+p
+
+stackloss
+stackloss_lm = lm(stack.loss~Air.Flow+Water.Temp+Acid.Conc. ,data = stackloss)
+stackloss_lm
+
+newdata = data.frame(Air.Flow = c(72,82,69,77), Water.Temp = c(20,25,18,22), Acid.Conc. = c(85,90,88,92))
+newdata
+
+predict(stackloss_lm,newdata,interval = 'confidence')
+predict(stackloss_lm,newdata,interval = 'prediction')
+
+#########################################-EXERCISE-###################################################
+library(datarium)
+data = marketing;data
+
+lin_mod=lm(sales~youtube,data=data)
+lin_mod
+
+new_yt_data=data.frame(youtube=c(150,100,208,32,108))
+new_yt_data
+predict(lin_mod,newdata = new_yt_data)
+
+predict(lin_mod,newdata = new_yt_data, interval='confidence')
+
+pred_int = predict(lin_mod, interval = 'prediction')
+pred_int
+
+library(ggplot2)
+p = ggplot(data, aes(youtube,sales))+geom_point()+stat_smooth(method = lm)
+p
+
+sm_lm = lm(sales~youtube+facebook,data = data)
+sm_lm
+
+newdata = data.frame(youtube = c(150,100,208,32,108), facebook = c(47,54.56,32.45,65.3,21.3))
+newdata
+
+predict(sm_lm,newdata,interval = 'confidence')
+predict(sm_lm,newdata,interval = 'prediction')
+")
+  return(cat(code))
+
+}
+
+
+ralab6 = function(){
+
+  code = cat("
+## Lab-07_Regression
+
+#AIM: to perform multiple regression estimation of parameters, fitting of the model, errorCondition
+#analyisis, model validation, variable selection and testing by importing a dataset
+
+head(mtcars)
+names(mtcars)
+model=lm(mpg~ cyl+disp+hp+drat+wt+qsec+ vs+ am+ gear+ carb,data=mtcars)
+model
+summary(model)
+
+confint(model)
+
+#hypothesis testing
+testst=coef(summary(model))[3,1]/coef(summary(model))[3,2]
+testst
+
+#to find the p-value
+2*pt(testst,21,lower.tail = F)
+
+#test for intercept
+test_intercept=coef(summary(model))[1,1]/coef(summary(model))[1,2]
+test_intercept
+
+#to find the p-value
+2*pt(test_intercept,21,lower.tail = F)
+
+##Model Assumptions
+residuals=model$residuals
+hist(residuals)
+
+#the histogram does not have the entire evidence that the residual is normally
+#distributed
+qqnorm(residuals)
+qqline(residuals)
+
+#we can see that it is normally distributed
+
+#Residual Analysis
+plot(model$residuals~mtcars$disp)
+abline(0,0)
+
+plot(model)
+
+#Model transformation
+model1=lm(mpg~cyl+log(disp)+log(hp)+drat+wt+qsec+ vs+ am+ gear+ carb,data=mtcars)
+model1
+
+summary(model)
+
+abline(0,0)
+
+plot(model1)
+
+#reducing the model using AIC
+library(MASS)
+stepAIC(model)# lower is the AIC better is the model
+
+# AIC model which is the best fit
+model_l2=lm(formula = mpg ~ wt + qsec + am, data = mtcars)
+model_l2
+summary(model_l2)
+
+#interaction model
+model_l3=lm(formula = mpg ~ qsec +wt * am, data = mtcars)
+model_l3
+summary(model_l3)
+# even if there is any star than that means that that parameter is significant
+#i.e we are rejecting the null hypothesis that they are equal to 0 and #accepting that they are significant to the model
+
+
+")
+  return(cat(code))
+
+}
+
 ralab7 = function(){
 
   code = cat("
@@ -584,6 +735,7 @@ data('mtcars')
 head(mtcars)
 model = lm(mpg~disp+wt,data=mtcars);model
 library(lmtest)
+library(olsrr)
 dwtest(model)
 
 # Variable selection and model building
@@ -646,8 +798,6 @@ plot(k8)
   return(cat(code))
 
 }
-
-ralab8()
 
 
 silab1 = function(){
@@ -2312,4 +2462,3 @@ plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
 }
 
 
-mllab6()
