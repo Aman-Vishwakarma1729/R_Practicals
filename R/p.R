@@ -800,6 +800,70 @@ plot(k8)
 }
 
 
+
+ralab9 = function(){
+
+  code = cat("
+  ## Fitting of non-linear regression models
+
+data = read.csv('D:\\R\\Regression_Analysis\\TensileStrength.csv.xls');data
+
+plot(data$HWC,data$TS,col='red',xlab = 'Hardwood concentration',ylab = 'Tensile strength')
+# --Based on plot we should use parabolic model--
+
+model1 = lm(TS~HWC+I(HWC**2),data=data);model1
+summary(model1)
+
+# Plotting fitted curve
+HWC_VAL = seq(0,20,0.01);HWC_VAL
+TS_VAL = predict(model1,data.frame(HWC=HWC_VAL),typr='response');TS_VAL
+
+lines(HWC_VAL,TS_VAL,col='blue',lwd=2)
+
+# Polynomial Regression method 2 using built in function
+model2 = lm(TS~poly(HWC,2,raw=T),data=data);model2
+summary(model2)
+
+# Plotting fitted curve
+HWC_VAL = seq(0,20,0.01);HWC_VAL
+TS_VAL = predict(model2,data.frame(HWC=HWC_VAL),type='response');TS_VAL
+
+lines(HWC_VAL,TS_VAL,col='blue',lwd=2)
+
+# Non-Linear least square regression
+# Michaelin-Menten model for chemical kinetics to realate initial velocity to the substrate concentration
+
+data=read.csv('D:\\R\\Regression_Analysis\\Puromycin.csv.xls')
+plot(data$SC,data$RV)
+
+model=nls(RV~(a*SC)/(b+SC),data=data,start=list(a=200,b=5))
+summary(model)
+SC_VAL=seq(0.02,1.5,0.01)
+RV_VAL=predict(model,data.frame(SC=SC_VAL),type='response')
+lines(SC_VAL,RV_VAL,col='blue')
+
+# Plant growth model
+# The model is mass = a*(1-(-b*week))
+
+library(minpack.lm)
+data = read.csv('D:\\R\\Regression_Analysis\\plants.csv.xls');data
+plot(data$week,data$mass,col='red',xlab = 'Week',ylab='Mass')
+
+model4 = nlsLM(mass~a*(1-exp(-b*week)),data=data,start=list(a=25,b=9));model4
+summary(model4)
+
+week_val = seq(0,20,0.001);week_val
+mass_val = predict(model4,data.frame(week=week_val));mass_val
+
+lines(week_val,mass_val,col='blue',lwd=2)
+
+")
+  return(cat(code))
+
+}
+
+
+
 silab1 = function(){
 
   code = cat('dataset = iris
