@@ -2526,3 +2526,78 @@ plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
 }
 
 
+tslab6 = function(){
+
+
+  code = cat("## AIC,BIC,AICC
+## AIM: Calculate and interpret AIC in R.
+
+data = mtcars
+head(data)
+
+# fitting three models for AIC
+model1 = lm(mpg~disp+hp+wt+qsec,data=data);model1
+model2 = lm(mpg~disp+qsec,data=data);model2
+model3 = lm(mpg~disp+wt,data=data);model3
+
+library(AICcmodavg)
+
+models = list(model1,model2,model3)
+
+mod.names = c('disp.hp.wt.qsec','disp.qsec','disp.wt')
+aictab(cand.set=models,modnames=mod.names)
+
+# Since model1 has lowest AIC of 162.43  we choose model1.
+
+# fitting three models for BIC
+model1 = lm(mpg~disp+hp,data=data);model1
+model2 = lm(mpg~disp+qsec,data=data);model2
+model3 = lm(mpg~disp+wt,data=data);model3
+
+library(flexmix)
+
+BIC(model1)
+BIC(model2)
+BIC(model3)
+
+## Question-1
+
+library(forecast)
+
+rain = c(987,1025,978,774,1563,569,1456,789,1479,566,1563,1698);rain
+
+rain_ts = ts(rain,start=c(2020,1),frequency = 12);rain_ts
+summary(rain_ts)
+plot(rain_ts)
+
+model1 = arima(rain_ts,order=c(1,0,0));model1
+model2 = arima(rain_ts,order=c(2,0,0));model2
+
+BIC(model1)
+BIC(model2)
+
+## Box-Test
+
+data = AirPassengers
+head(data)
+
+summary(data)
+plot(data)
+
+model = auto.arima(data);model
+
+plot.ts(model$residual)
+
+forecast = forecast(model,lelvel=c(95),h=3*12)
+plot(forecast)
+
+Box.test(model$resid,lag=5,type = 'Ljung-Box')
+Box.test(model$resid,lag=10,type = 'Ljung-Box')
+Box.test(model$resid,lag=15,type = 'Ljung-Box')
+
+
+
+")
+  return(cat(code))
+
+}
