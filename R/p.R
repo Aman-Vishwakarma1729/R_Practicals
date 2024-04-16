@@ -2277,6 +2277,57 @@ spec_clusters$centers
 
 
 
+
+mllab9 = function(){
+
+
+  code = cat("##library(tidyverse)    # Data manipulation
+library(kernlab)      # SVM methodology
+library(e1071)        # SVM methodology
+library(ISLR)         # Contains example data
+library(RColorBrewer) # Customize coloring
+
+# Example-1
+# Construct sample dataset completely separated
+# set pseudorandom number generator
+set.seed(10)
+x = matrix(rnorm(25*2),ncol=2)
+y = c(rep(0,13),rep(1,12))
+x[y==1,] = x[y==1,] + 3
+data = data.frame(x=x,y=as.factor(y));data
+
+# Plot data
+plot(x=data$x.2,y=data$x.1,col=data$y,pch=16,xlab='x2',ylab='x1')
+
+# Fit SVM
+svmfit = svm(y~.,data=data,kernel='linear',scale=FALSE)
+
+#plot result
+plot(svmfit,data)
+
+# Example-2
+set.seed(10)
+x = matrix(rnorm(20*2),ncol=2)
+y = c(rep(-1,10),rep(1,10))
+x[y==1,] = x[y==1,] + 1
+data = data.frame(x=x,y=as.factor(y));data
+
+# Plot data
+plot(x=data$x.2,y=data$x.1,col=data$y,pch=16,xlab='x2',ylab='x1')
+
+# Fit SVM
+svmfit = svm(y~.,data=data,kernel='linear',cost=10,scale=FALSE)
+
+#plot result
+plot(svmfit,data)
+
+
+")
+  return(cat(code))
+
+}
+
+
 tslab1 = function(){
 
 
