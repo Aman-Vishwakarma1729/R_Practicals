@@ -1611,6 +1611,86 @@ qf(0.95,7,6)")
 }
 
 
+silab9 = function(){
+
+
+  code = cat("## Non-Parametric Tests
+
+# Ques-1 (Sign Test)
+data = c(271,230,198,275,282,225,284,219,253,216,262,288,236,291,253,224,264,295,211,252,294,243,272,268);data
+
+# method-1
+binom_test_result = binom.test(sum(data>250),length(data),p=0.5,alternative='greater');binom_test_result
+
+# method-2
+binom.test(15,24,p=0.5,alternative='greater',conf.level = 0.95)
+
+# method-3
+library(BSDA)
+SIGN.test(x=data,md=250,alternative='greater',conf.level=0.95)
+
+'---------------------------------------------------------------------------------------------------------------'
+
+# Ques-2 (Run Test)
+
+data = c('H','T','T','H','H','H','T','H','H','T','T','H','T','H',
+         'T','H','H','T','H','T','T','H','T','H','H','T','H','T');data
+
+'H0: The sequence is random'
+'H1: THe sequence is not random i.e. there is some pattern in distribution'
+
+library(DescToolsAddIns)
+RunsTest(data,alternative='two.sided',na.rm=False)
+
+'---------------------------------------------------------------------------------------------------------------'
+
+# Ques-3 (Run Test)
+
+data = c('G','G','G','G','G','G','D','D','G','G','G','G','G','G','G','G','G','G','D',
+         'D','D','D','G','G','G','G','G','G','D','D','G','G','G','G','G','D','G','G');data
+
+'H0: The sequence is random'
+'H1: THe sequence is not random i.e. there is some pattern in distribution'
+
+RunsTest(data,alternative='two.sided',na.rm=False,conf.level=0.95)
+
+'---------------------------------------------------------------------------------------------------------------'
+# Rank Sum Test
+
+# Ques-4 (Mann Whiley Test)
+'Mann-Whitney U test when onlu two population is involved'
+'Kruskal Wallis test when more than two population is involved'
+
+alloy1 = c(18.3,16.4,22.7,17.8,18.9,25.3,16.1,24.2);alloy1
+alloy2 = c(12.6,14.1,20.5,10.7,15.9,19.6,12.9,15.2,11.8,14.7);alloy2
+
+'H0: There is no difference between alloy1 and alloy2'
+'H1: There is difference between alloy1 and alloy2'
+
+wilcox.test(alloy1,alloy2,alternative = 'two.sided',conf.level = 0.95)
+
+'---------------------------------------------------------------------------------------------------------------'
+
+# Ques-5 (Kruskal Wallis Test)
+
+x = c(74,88,82,93,55,70,78,80,65,57,89,68,83,50,91,84,77,94,81,92)
+group = c('A','A','A','A','A','A','B','B','B','B','B','C','C','C','C','C','C','C','C','C')
+
+length(x)
+length(group)
+'H0: There is no difference between three population'
+'H1: There is difference between population i.e. difference between all three population'
+
+data = data.frame(x,group);data
+
+kruskal.test(x~group,data=data)
+qchisq(0.90,2) # dof = 3 - 1 = 2
+")
+
+  return(cat(code))
+
+}
+
 
 sipracticelab1 = function(){
 
@@ -2320,8 +2400,6 @@ svmfit = svm(y~.,data=data,kernel='linear',cost=10,scale=FALSE)
 
 #plot result
 plot(svmfit,data)
-
-
 ")
   return(cat(code))
 
