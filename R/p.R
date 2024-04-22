@@ -2730,3 +2730,43 @@ Box.test(model$resid,lag=15,type = 'Ljung-Box')
   return(cat(code))
 
 }
+
+
+tslab7 = function(){
+
+
+  code = cat("## Spectral Density Function
+
+meas = read.table('https://web.stanford.edu/class/earthsys214/data/nycmeas.dat.txt',header = FALSE);meas
+dimnames(meas)[[2]] = c('Dates','Cases')
+require(zoo)
+meas1 = zoo(meas$Cases,order.by=meas$Dates);meas1
+plot(meas1,xlab='Date',ylab='Cases')
+
+kernel('modified.daniell',c(1,1))
+mspect = spectrum(meas$Cases,log='no',spans=c(2,2),plot=FALSE)
+delta = 1/12
+specx = mspect$freq/delta
+specy = 2*mspect$spec
+plot(specx,specy,xlab='Period(Years)',ylab='Spectral Density',type='l')
+
+dengue = read.csv('https://web.stanford.edu/class/earthsys214/data/San_Juan_Training_Data.csv',header = TRUE);dengue
+tcases = zoo(dengue$total_cases,as.Date(dengue$week_start_date))
+plot(tcases,xlab='Date',ylab='Total Cases')
+library(TSA)
+acases = zoo(dengue[,4:7],as.Date(dengue$week_start_date))
+plot(acases,xlab='Date',ylab=list('Dengue 1','Dengue 2','Dengue 3','Dengue 4'))
+
+dspect = spectrum(dengue$total_cases,log='no',spans=c(5,5),plot='FALSE')
+delta = 7/365
+specx = dspect$freq/delta
+specy = 2*dspect$spec
+plot(specx[1:100],specy[1:100],xlab='Period (Year)',ylab='SPectral Density',type='l')
+
+
+
+")
+  return(cat(code))
+
+}
+
