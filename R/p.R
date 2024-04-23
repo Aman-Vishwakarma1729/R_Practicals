@@ -2406,6 +2406,43 @@ plot(svmfit,data)
 }
 
 
+mllab10 = function(){
+
+
+  code = cat("## Maximum Likelihood Estimation
+
+library('EnvStats')
+library('dplyr')
+library('tidyverse')
+
+# Binomial Distribution
+set.seed(33)
+data = rbinom(1,100,0.5)
+ebinom(data,size=100,method='mle')
+
+# Poisson Distribution
+set.seed(33)
+data = rpois(100,lambda = 5)
+df = data.frame(data)
+df%>%ggplot(aes(x=data)) + geom_histogram(bins=20)+labs(title = 'Poisson Distribution', subtitle='lambda=5',x='data',y='count')+theme_bw()
+epois(data,method='mle')
+
+# Normal Distribution
+set.seed(33)
+N = 100
+x = rnorm(N,mean=3,sd=2)
+mean(x)
+sd(x)
+data.frame(x=x) %>%
+  ggplot(aes(x=x)) + geom_histogram(bins=30,color = 'blue',fills='dodgerblue')+ theme_bw(base_size = 16)+ xlab('Data')
+enorm(x,method='mle')
+
+")
+  return(cat(code))
+
+}
+
+
 tslab1 = function(){
 
 
