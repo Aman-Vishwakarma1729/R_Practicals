@@ -1639,8 +1639,9 @@ data = c('H','T','T','H','H','H','T','H','H','T','T','H','T','H',
 'H0: The sequence is random'
 'H1: THe sequence is not random i.e. there is some pattern in distribution'
 
-library(DescToolsAddIns)
-RunsTest(data,alternative='two.sided',na.rm=False)
+library(rootSolve)
+library(DescTools)
+RunsTest(data,alternative='two.sided',na.rm=FALSE)
 
 '---------------------------------------------------------------------------------------------------------------'
 
@@ -1652,7 +1653,7 @@ data = c('G','G','G','G','G','G','D','D','G','G','G','G','G','G','G','G','G','G'
 'H0: The sequence is random'
 'H1: THe sequence is not random i.e. there is some pattern in distribution'
 
-RunsTest(data,alternative='two.sided',na.rm=False,conf.level=0.95)
+RunsTest(data,alternative='two.sided',na.rm=FALSE,conf.level=0.95)
 
 '---------------------------------------------------------------------------------------------------------------'
 # Rank Sum Test
@@ -1685,6 +1686,7 @@ data = data.frame(x,group);data
 
 kruskal.test(x~group,data=data)
 qchisq(0.90,2) # dof = 3 - 1 = 2
+
 ")
 
   return(cat(code))
@@ -2806,4 +2808,3 @@ plot(specx[1:100],specy[1:100],xlab='Period (Year)',ylab='SPectral Density',type
   return(cat(code))
 
 }
-
