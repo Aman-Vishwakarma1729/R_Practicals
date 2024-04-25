@@ -59,7 +59,6 @@ chisq.test(contengency_tabel)
 ## X-squared = 1.28, df = 1, p-value = 0.2579
 ## Since p-value is greater than 0.05 we fail to reject null hypothesis.
 ## Therefore the categorical variables "GENDER" and "Excercise" are indepedent of each other.
-
 ## Calculating correlation between variable
 correlation = cor(db$HEIGHT,db$WEIGHT,method = "pearson")
 correlation
@@ -78,7 +77,7 @@ summary(mlm)')
 
 
 ralab2 = function(){
-  code = cat("## Experiment-1
+  code = cat("## # Experiment-1
 # Correlation Analysis using scatter diagram, Karl Pearson's correlation coefficient and drawing inferrence for given data-set.
 
 data1 = iris
@@ -94,6 +93,35 @@ ggplot(data1,aes(x = data1$Sepal.Width,y = data1$Sepal.Length)) +
 data2 =mtcars
 cor1 = cor.test(data2$wt,data2$mpg,method='pearson')
 cor1
+'Null Hypothesis: H0: ρ = 0(The population correlation coefficient IS NOT
+significantly different from zero. There IS NOT a significant linear relationship
+(correlation) between x and y in the population.
+
+Alternate Hypothesis: Ha: ρ ≠ 0(The population correlation coefficient IS
+significantly DIFFERENT FROM zero. There IS A SIGNIFICANT LINEAR
+RELATIONSHIP (correlation) between x and y in the population.
+As we see from the results above the p-value of the test is 1.294e−10, which is less
+than the significance level α=0.05. We can conclude that ‘wt’ and ‘mpg’ are
+significantly correlated with a correlation coefficient of -0.87 and p-value of
+1.294e−10.
+
+Note:-
+1) We say that the correlation coefficient is “significant” when the test
+concludes that the correlation coefficient is significantly different from
+zero. There is sufficient evidence to conclude that there is a significant
+linear relationship between x and y because the correlation coefficient is
+significantly different from zero.
+There is a significant linear relationship between x and y. We can use the
+regression line to model the linear relationship between x and y in the
+population.
+
+2) On the other hand, if the test concludes that the correlation coefficient is
+not significantly different from zero (it is close to zero), we say that
+correlation coefficient is “not significant”.
+There is insufficient evidence to conclude that there is a significant linear
+relationship between x and y because the correlation coefficient is not
+significantly different from zero. '
+
 
 data3 = data2[,c(1,3,4,5)]
 data3
@@ -151,7 +179,6 @@ ggcorrplot(cor10,hc.order=TRUE,type='lower',lab=TRUE)")
   return(cat(code))
 
 }
-
 
 
 ralab3 = function(){
@@ -676,12 +703,30 @@ summary(model_l3)
 ralab7 = function(){
 
   code = cat("
-  ## Experiment-7: Problem with multi-collinearity and determination of VIF (Variation Inflation Factor)
+## Experiment-7: Problem with multi-collinearity and determination of VIF (Variation Inflation Factor)
 
-'Aim: To perform the test pertaining to multicollinearity and determination of VIT for given dataset'
+'Aim: To perform the test pertaining to multicollinearity and determination of VIF for given dataset'
+
+'Multicollinearity is a statistical concept where two or more independent
+(predictor) variables of a multiple regression model are highly
+correlated. That is to say, one independent variable is a (linear)
+combination of the other independent variables.
+goodness-of-fit Multicollinearity does not influence the precision of the predictions,
+nor the statistics (e.g., R-squared).
+
+However, multicollinearity does become problematic when you want to draw
+conclusions about the independent variables.
+
+As a result of multicollinearity, the coefficients of a multiple regression
+model cannot be interpreted meaningfully. In other words, the model is
+not able to clearly separate the effect of each predictor variable.
+Moreover, the p-values that indicate the statistical significance of the
+independent variables might not be reliable.'
+
+'We can check mutlicollinearity using correlation matrix using variables with high correlation'
 
 library(tidyverse)
-mydata = mtcars%>%select(mpg,cyl,disp,hp,wt)
+mydata = mtcars%>%dplyr::select(mpg,cyl,disp,hp,wt)
 head(mydata)
 
 model = lm(mpg~.,data = mydata);model
@@ -691,11 +736,26 @@ library('corrplot')
 corrplot(cor(mydata),method='number')
 
 # Using VIF
+'We can check mutlicollinearity using VIF'
+'The Variance Inflation Factor (VIF) measures the inflation in the
+coefficient of the independent variable due to the collinearities among
+the other independent variables. A VIF of 1 means that the regression
+coefficient is not inflated by the presence of the other predictors, and
+hence multicollinearity does not exist.
+As a rule of thumb, a VIF exceeding 5 requires further investigation,
+whereas VIFs above 10 indicate multicollinearity. Ideally, the Variance
+Inflation Factors are below 3.
+'
 library(olsrr)
 ols_vif_tol(model)
+'The variable disp has a Tolerance < 0.1 and a VIF above 10. Therefore,
+multicollinearity is highly likely.'
 
 # Using Eigenvalue and Condition Index
+'We can check mutlicollinearity using eignevalues and conditon index'
 ols_eigen_cindex(model)
+'Based on the 3 tests above, we conclude that multicollinearity exists in
+our regression model. '
 ")
   return(cat(code))
 
@@ -717,7 +777,7 @@ ncol(data)
 hwy = data$hwy
 summary(hwy)
 
-hist(hwy)
+hist(hwy,xlab='hwy',main='Histogram of hwy',breaks=sqrt(nrow(dat)))
 
 out = boxplot.stats(data$hwy)$out; out
 boxplot(data$hwy,ylab='hwy')
@@ -727,6 +787,14 @@ out_ind = which(data$hwy %in% c(out));out_ind
 data[out_ind,]
 
 # Durbin Watson test
+
+'One of the key assumptions in linear regression is that there is no
+correlation between the residuals, e.g. the residuals are independent.'
+'
+One way to determine if this assumption is met is to perform a
+Durbin-Watson test, which is used to detect the presence of
+autocorrelation in the residuals of a regression. This test uses the
+following hypotheses:'
 
 'H0: There is no correlation among the residuals'
 'H1: The residuals are auto-correlated'
@@ -738,7 +806,33 @@ library(lmtest)
 library(olsrr)
 dwtest(model)
 
+'From the output we can see that the test statistic is 1.2766 and the corresp
+onding p-value is 0.01032. Since this p-value is less than 0.05, we can reje
+ct the null hypothesis and conclude that the residuals in this regression
+model are auto correlated.'
+
+
 # Variable selection and model building
+
+'When we fit a multiple regression model, we use the p-value in the
+ANOVA table to determine whether the model, as a whole, is significant.
+A natural next question to ask is which predictors, among a larger set of
+all potential predictors, are important. We could use the individual p
+values and refit the model with only significant terms. But, remember that
+the p-values are adjusted for the other terms in the model. So, picking out
+the subset of significant predictors can be somewhat challenging. This
+task of identifying the best subset of predictors to include in the model,
+among all possible subsets of predictors, is referred to as variable
+selection.'
+
+
+'Variable Selection Methods-1,All Possible Regression'
+'All subset regression tests all possible subsets of the set of potential
+independent variables. If there are 𝑘 potential independent variables
+(besides the constant), then there are 2𝑘 distinct subsets of them to be
+tested. For example, if you have 10 candidate independent variables, the
+number of subsets to be tested is 210, which is 1024, and if you have 20
+candidate variables, the number is 220, which is more than one million.'
 
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k1 = ols_step_all_possible(model)
@@ -747,12 +841,24 @@ plot(k1)
 
 ## Best subset regression
 
+'Variable Selection Methods-2, Best Subset Regression '
+'Select the subset of predictors that do the best at meeting some well
+defined objective criterion, such as having the largest R2 value or the
+smallest MSE, Mallow’s Cp or AIC.'
+
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k2 = ols_step_best_subset(model)
 k2
 plot(k2)
 
 ## Step wise forward regression
+
+'Variable Selection Methods-3, Stepwise Forward Regression'
+'Forward selection: We start with a model containing only the intercept.
+Then we slowly add terms to the model, one at a time, starting with the
+predictor with the lowest p-value. This continues until all the remaining
+terms that are not included in the model are above a specified p-value
+threshold.'
 
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k3 = ols_step_forward_p(model,details = TRUE)
@@ -761,12 +867,30 @@ plot(k3)
 
 ## Step wise backward regression
 
+'Variable Selection Methods-4, Stepwise Backward Regression'
+'Another approach is to fit a full model and slowly remove terms one at a
+time, starting with the term with the highest p-value. This is referred to as
+backward selection.'
+
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k4 = ols_step_backward_p(model,details = TRUE)
 k4
 plot(k4)
 
 ## Mixed selection regression
+
+'Variable Selection Methods-5, Mixed selection Regression'
+'A third classic variable selection approach is mixed selection. This is a
+combination of forward selection (for adding significant terms) and
+backward selection (for removing nonsignificant terms). As in forward
+selection, we start with only the intercept and add the most significant
+term to the model. We continue to add the most significant variables, one
+at a time. We use a p-value threshold to determine when to stop adding
+terms to the model. For example, we might set the p-value to enter the
+model at 0.05 or 0.10. At each step, we look at the p-values for the terms
+in the model and compare the p-values to the threshold for removal. For
+example, we might set a p-value to leave the model at 0.10 or 0.15. If a p
+value is greater than the threshold, the term is removed from the model. '
 
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k5 = ols_step_both_p(model,details = TRUE)
@@ -775,6 +899,13 @@ plot(k5)
 
 ## Step wise AIC forward regression
 
+'Variable Selection Methods-6, Stepwise AIC Forward Regression'
+'Build regression model from a set of candidate predictor variables by ente
+ring predictors based on Akaike Information Criteria (AIC), in a stepwise
+manner until there is no variable left to enter any more. The model should
+include all the candidate predictor variables. If details is set to TRUE, each
+step is displayed.'
+
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k6 = ols_step_forward_aic(model,details = TRUE)
 k6
@@ -782,12 +913,26 @@ plot(k6)
 
 ## Step wise AIC backward regression
 
+'Variable Selection Methods-7,Stepwise AIC Backward Regression'
+'Build regression model from a set of candidate predictor variables by
+removing predictors based on Akaike Information Criteria (AIC), in a
+stepwise manner until there is no variable left to remove any more. The
+model should include all the candidate predictor variables. If details is set
+to TRUE, each step is displayed.'
+
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k7 = ols_step_backward_aic(model,details = TRUE)
 k7
 plot(k7)
 
 ## Mixed selection regression using AIC
+
+'Variable Selection Methods-8,Mixed selection AIC Regression'
+'Build regression model from a set of candidate predictor variables by
+entering and removing predictors based on Akaike Information Criteria,
+in a stepwise manner until there is no variable left to enter or remove any
+more. The model should include all the candidate predictor variables. If
+details is set to TRUE, each step is displayed.'
 
 model = lm(mpg~disp+hp+wt+qsec,data=mtcars)
 k8 = ols_step_both_aic(model,details = TRUE)
@@ -798,8 +943,6 @@ plot(k8)
   return(cat(code))
 
 }
-
-
 
 ralab9 = function(){
 
