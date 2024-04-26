@@ -325,18 +325,107 @@ ggplot(model.diag.metrics,aes(mydata$carat,mydata$price)) +
 
 #Residuals vs Fitted.
 plot(fit,1)
+'Used to check the linear relationship
+assumptions. A horizontal line, without distinct patterns is an
+indication for a good linear relationship. '
+
+'In Figure 1 the residuals are contained in a horizontal band fashion
+(and residual fluctuates more or less in a random manner inside the band),
+then there are no visible model defects.
+'
+' In Figure 2 the residuals are contained in an outward opening funnel
+then such pattern indicates that the variance of errors is not constant, but it
+is an increasing function of y. '
+
+' Figure 3 accommodates the residuals as an inward opening funnel,
+and then such a pattern indicates that the variance of errors is not
+constant, but it is a decreasing function of y.'
+
+' If the plot is such that the residuals can be accommodated inside a
+double bow as in the case of Figure 4, then such a pattern indicates that
+the variance of errors is not constant but y is a proportion between 0 and
+1. The y then may have a Binomial distribution. The variance of a
+Binomial proportion near 0.5 is higher as compared to near-zero or 1. So
+the assumed relationship between y and X‘s is nonlinear.
+The usual approach to deal with such inequality of variances is to apply
+a suitable transformation to either the explanatory variables or the study
+variable or use the method of weighted least squares. In practice,
+transformations on study variables are generally employed to stabilize the
+variance.'
+
+'Figure 5 illustrates the fact that the residuals are contained inside a
+curved plot, which indicates nonlinearity. Therefore assumed relationship
+between y and X’s is non-linear.
+This could also mean that some other explanatory variables are
+needed in the model. For example, we may have a squared term in the
+regressor variables may. Transformations on explanatory variables and/or
+study variables may also be helpful in these cases.
+'
+'A plot of residuals against 𝑦 may also reveal one or more unusually large
+residuals. These points are potential outliers. Large residuals that occur at
+the extreme 𝑦 values could also indicate that either the variance is not
+constant or the true relationship between y and X is nonlinear. These
+possibilities should be investigated before the points are considered
+outliers.
+Inference:-
+In our dataset, there is no pattern in the residual plot. This suggests that
+we can assume linear relationship between the predictors and the outcome
+variables.
+'
+
 
 # Normal Q-Q
 plot(fit,2)
 
+'Used to examine whether the residuals are normally
+distributed. It’s good if residuals points follow the straight dashed
+line.'
+
+'For our data set under consideration, the standard error fall between
+(-3, 3), which implies that the normality assumption hold good.
+'
+
 #Scale-Location
 plot(fit,3)
+
+'Scale-Location (or Spread-Location). Used to check the
+homogeneity of variance of the residuals (homoscedasticity).
+Horizontal line with equally spread points is a good indication of
+homoscedasticity.  '
+
+'The Scale-Location plot for the data set portray that residuals are spread
+equally along the ranges of predictors which satisfy the homoscedasticity
+assumptions.
+Note:-
+A possible solution to reduce the heteroscedasticity problem is to use a
+log or square root transformation of the outcome variable (y). '
 
 # Cook’s Distance Plot
 plot(fit,4)
 
+'Cook’s distance (often referred to as Cook’s D) is a common
+measurement of a data point’s influence. It’s a way to find influential
+outliers in a set of predictor variables when performing a least-squares
+regression analysis. The concept was introduced by an American
+statistician named R. Dennis Cook. '
+
+'Inference:-
+It can be seen from Cook’s distance plot, there is no influential outliers
+for the data set under consideration. '
+
+
 #Residuals vs Leverage
 plot(fit,5)
+
+'Residuals vs Leverage. Used to identify influential cases, that is
+extreme values that might influence the regression results when included
+or excluded from the analysis. '
+
+'Inference:-
+Cook’s distance lines (a red dashed line) shown on the Residuals vs
+Leverage plot indicates that all points are well inside of the Cook’s
+distance lines. This indicates the data don’t present any influential points. '
+
 
 #Forecast Accuracy for a Given Data Set
 
@@ -440,6 +529,29 @@ linear_Model
 
 modelSummary=summary(linear_Model)
 modelSummary
+'The p-Values are very important. Because, we can consider a linear
+model to be statistically significant only when both these p-Values are
+less than the pre-determined statistical significance level of 0.05.
+
+This can visually interpreted by the significance stars at the end of the row
+against each X variable.
+Note:-The more the stars beside the variables p-Value, the more
+significant the variable.
+
+In Linear Regression, the Null Hypothesis (H0) is that the beta
+coefficients associated with the variables is equal to zero.
+
+The alternate hypothesis (H1) is that the coefficients are not equal to
+zero. (i.e. there exists a relationship between the independent
+variable in question and the dependent variable).
+
+When p Value is less than significance level (< 0.05), you can safely
+reject the null hypothesis that the co-efficient of the predictor is
+zero.
+
+In our case, linear_Model, both these p-Values are well below the
+0.05 threshold. So, you can reject the null hypothesis and conclude
+the model is indeed statistically significant.'
 
 modelCoeffs=modelSummary$coefficients
 modelCoeffs
@@ -568,14 +680,26 @@ new_speeds
 predict(lin_mod,newdata = new_speeds)
 
 #confidence interval
+
+'The confidence interval reflects the uncertainty around the mean
+predictions. To display the 95% confidence intervals around the mean the
+predictions, specify the option interval = confidence.'
+
 predict(lin_mod,newdata = new_speeds, interval='confidence')
 
+#Visualizing predition interval
 pred_int = predict(lin_mod, interval = 'prediction')
-pred_int
+data=cbind(cars,pred_int)
 
 library(ggplot2)
 p = ggplot(cars, aes(speed,dist))+geom_point()+stat_smooth(method = lm)
 p
+
+'The regression line in blue
+The confidence band in gray
+The prediction band in red'
+
+# Confidence and Prediction Interval for Multiple Linear Regressions
 
 stackloss
 stackloss_lm = lm(stack.loss~Air.Flow+Water.Temp+Acid.Conc. ,data = stackloss)
@@ -637,7 +761,11 @@ summary(model)
 
 confint(model)
 
-#hypothesis testing
+#hypothesis testing/t-test
+
+'H0: The response variable coefficient is equal to 0.'
+'H1: The response variable coefficient is not equal to 0.'
+
 testst=coef(summary(model))[3,1]/coef(summary(model))[3,2]
 testst
 
@@ -665,22 +793,67 @@ qqline(residuals)
 #Residual Analysis
 plot(model$residuals~mtcars$disp)
 abline(0,0)
+'Homoscedasticity: Constant variance throughout our data. We can look at
+this by plotting our residuals along a horizontal line across 0.'
+
+'Plots give no evidence of different levels of variance and the points
+appear to be randomly distributed opposed to displaying signs of a pattern
+of sorts.'
 
 plot(model)
+'It can be seen that there is a slight
+pattern to the residuals of our model where we would need the residuals
+distributed as randomly as possible. We can fix this by dropping some
+predictors or adding transformations to our model.'
+
+'Normal Q-Q Plot: The quantiles to the considered model follow a
+normal distribution as there is not much deviation.'
+
+'Studentized residual plot: It can be seen that some data points are
+clumped together whereas we would rather have them evenly spread out. '
+
+'Cook’s Distance plot: It can be seen that some data points have a lot of
+leverage to them and may be affecting the accuracy of our model by
+skewing the results.'
 
 #Model transformation
+
+'From the residual analysis, we can conclude that some transformations
+may be beneficial to our model. We will improve our model by
+transforming some of our predictors, either with a square root
+transformation or a log transformation. '
+
 model1=lm(mpg~cyl+log(disp)+log(hp)+drat+wt+qsec+ vs+ am+ gear+ carb,data=mtcars)
 model1
 
 summary(model)
+'It can be seen that 𝑅 value increased from .869 to .8879.'
 
 abline(0,0)
 
 plot(model1)
 
+'The residuals vs the fitted values plot slightly improved although the
+data points are not yet evenly distributed.
+However, the quantiles still follow a normal distribution and
+The studentized residuals were more evenly spread out.
+The Cook’s Distance plot also improved as the data no longer is as
+bunched up as it used to be and all of the data points lie within the
+threshold for acceptable weight because all of the data points lie
+within the dashed lines. '
+
 #reducing the model using AIC
+
+'We construct a model using all of the variables we had  but that might not
+be our best model as we may be able to create a better model using less
+predictors. Let see how to reduce our model and explain how if one model
+is better than the other.'
+
 library(MASS)
 stepAIC(model)# lower is the AIC better is the model
+
+'R gives us an output telling us to keep only 3 variables as predictors:
+quarter mile time, weight, and transmission type. '
 
 # AIC model which is the best fit
 model_l2=lm(formula = mpg ~ wt + qsec + am, data = mtcars)
@@ -694,11 +867,18 @@ summary(model_l3)
 # even if there is any star than that means that that parameter is significant
 #i.e we are rejecting the null hypothesis that they are equal to 0 and #accepting that they are significant to the model
 
+# Model Confidence and Prediction Intervals
+new_values=data.frame(wt=2.92, qsec=20.1, am=1);new_values
+pred_y=predict(model2,new_values,interval='predict');pred_y
+
+conf_y=predict(model2,new_values,interval='confidence');conf_y
 
 ")
   return(cat(code))
 
 }
+
+
 
 ralab7 = function(){
 
