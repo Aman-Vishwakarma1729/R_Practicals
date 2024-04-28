@@ -3131,3 +3131,5 @@ plot(specx[1:100],specy[1:100],xlab='Period (Year)',ylab='SPectral Density',type
   return(cat(code))
 
 }
+
+tslab7()
