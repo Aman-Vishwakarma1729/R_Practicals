@@ -2897,6 +2897,67 @@ tslab3 = function(){
 
   code = cat("## Exponential smoothing techniques (Single, Double and Tripple)
 
+'The single exponential smoothing formula is given by
+ 𝑠𝑡 = 𝛼𝑥𝑡 +
+ 1−𝛼 𝑠𝑡−1 =𝑠𝑡−1 +𝛼
+ 𝑥𝑡 −𝑠𝑡−1 .
+ Here, 𝑠𝑡= smoothed statistic, it is the simple weighted
+average of current observation 𝑥𝑡, 𝑠𝑡−1= previous
+smoothed statistic, 𝛼 = smoothing factor of data, 0 < α <
+1 and t = time period'
+
+'The double exponential smoothing formulas are given by
+ 𝑠1 = 𝑥1
+ 𝑏1 = 𝑥1 −𝑥0
+ For 𝑡 > 1,
+ 𝑠𝑡 = 𝛼𝑥𝑡 +
+ 1−𝛼
+ 𝛽1 = 𝛽
+ 𝑠𝑡−1 + 𝑏𝑡−1
+ 𝑠𝑡 −𝑠𝑡−1 +
+ 1−𝛽 𝑏𝑡−1,𝛼,𝛽 ∈
+ 0, 1
+ Here, 𝑠𝑡 − smoothed statistic, it is the simple weighted average
+of current observation 𝑥𝑡, 𝑠𝑡−1 − previous smoothed statistic, α
+ −smoothing factor of data, 0 < α < 1,
+ t −time period, bt − best estimate of trend at time t and β −
+ trend smoothing factor, 0 < β <1
+'
+
+'Triple exponential smoothing
+ • It is also called as Holt-winters exponential smoothing . It is
+used to handle the time series data containing both linear trend
+and a seasonal component.
+ • Double smoothing will not work in case of data containing
+seasonality so that for smoothing the seasonality, a third
+equation is introduced. In this method, exponential smoothing
+applied three times.
+• The triple exponential smoothing formulas are given by
+ 𝑠0 = 𝑥0; 𝑠𝑡 = 𝛼
+ 𝑏𝑡= 𝛽
+ 𝑥𝑡
+ 𝑐𝑡−𝐿
++
+ 𝑠𝑡 −𝑠𝑡−1 +
+ 1−𝛼
+ 𝑠𝑡−1 +𝑏𝑡−1 ;
+1−𝛽 𝑏𝑡−1;𝑐𝑡 = 𝛾𝑥
+ 𝑡
+ 𝑠𝑡
++
+ 1−𝛾 𝑐𝑡−𝐿.
+Here,
+ st = smoothed statistic, it is the simple weighted average of
+current observation xt
+ st-1 = previous smoothed statistic
+ α = smoothing factor of data; 0 < α < 1
+ t = time period
+ bt = best estimate of a trend at time t
+ β = trend smoothing factor; 0 < β <1
+ ct = sequence of seasonal correction factor at time t
+ γ = seasonal change smoothing factor; 0 < γ < 1
+'
+
 # Single exponential smoothing
 library(forecast)
 y = c(71,70,69,68,64,65,72,78,75,75,75,70)
@@ -2934,6 +2995,8 @@ pred = forecast(fit,5)
 pred
 plot(fit)
 
+plot(fit)
+
 ")
   return(cat(code))
 
@@ -2946,6 +3009,25 @@ tslab4 = function(){
 
   code = cat("# Auto Regressive Model for Stationary Time Series
 
+'In an autoregression model, we forecast the variable of interest using a linear
+combination of past values of the variable'
+
+'➢For an AR(1) model:
+ when 𝜑1 = 0,𝑦𝑡 is equivalent to white noise;
+ when 𝜑1 = 1&𝑐 =0, 𝑦𝑡 is equivalent to a random walk;
+ when 𝜑1 = 1&𝑐 ≠0, 𝑦𝑡 is equivalent to a random walk with drift;
+ when 𝜑1 < 0, 𝑦𝑡 tends to oscillate around the mean.'
+
+'We normally restrict autoregressive models to stationary data, in which case some
+constraints on the values of the parameters are required.
+ For an AR(1) model: −1 < 𝜑1<1.
+ For an AR(2) model: −1 < 𝜑2<1, 𝜑1 + 𝜑2<1, 𝜑1 − 𝜑2<1'
+
+' ACF: Auto correlation is the correlation between a time series with a lagged version of
+itself. The ACF starts at a lag of 0, which is the correlation of the time series with itself
+and therefore resulting in a correlation of 1.'
+
+
 set.seed(0)
 
 'yt = 0.5(yt-1) + et'
@@ -2954,7 +3036,7 @@ y1 = numeric(250); y1
 y1[1] = y[1]
 for (i in 2:250) {
   y1[i] = 0.5*y1[i-1]+y[i]
-  }
+}
 plot.ts(y1)
 acf(y1)
 
@@ -3099,11 +3181,78 @@ tslab7 = function(){
 
   code = cat("## Spectral Density Function
 
+'Many time series show periodic behavior. This periodic behavior can be very complex.
+Spectral analysis is a technique that allows us to discover underlying periodicities. To
+perform spectral analysis, we first must transform data from time domain to frequency
+domain.'
+
 meas = read.table('https://web.stanford.edu/class/earthsys214/data/nycmeas.dat.txt',header = FALSE);meas
 dimnames(meas)[[2]] = c('Dates','Cases')
 require(zoo)
 meas1 = zoo(meas$Cases,order.by=meas$Dates);meas1
 plot(meas1,xlab='Date',ylab='Cases')
+
+'Here the series looks extremely regular. We can calculate its power spectrum to
+determine what frequencies dominate the variance. The function spectrum is a wrapper
+for calculating the periodogram (i.e., an estimate of the spectral density) from time series.
+There are a couple issues that need to be kept in mind:
+ Spectrum calculates the frequency axis in terms of cycles per sampling interval; it makes
+more sense to convert to cycles per unit time (so divide by the sampling interval).
+ The spectrum will be far more interpretable if it is smoothed
+ Use the argument spans, which specifies the parameter(s) for the what is known as the
+modified Daniell kernel for smoothing the spectrum. Modified Daniell kernel is
+essentially just a running average. No hard-and-fast rule for how to do this (try a couple
+different values), the higher the number of spans, the more smoothing and the lower the
+peaks of the spectrum will be.
+ The default for spectrum is to calculate the spectrum on a log-scale
+ Use the argument log='no' to change this default
+ The spectrum needs to be multiplied by 2 to make it actually equal to variance.
+
+A periodogram is used to identify the dominant periods (or frequencies) of a time series.
+This can be a helpful tool for identifying the dominant cyclical behaviour in a series,
+particularly when the cycles are not related to the commonly encountered monthly or
+quarterly seasonality.
+ The raw periodogram is a rough sample estimate of the population spectral density. The
+estimate is “rough”, in part, because we only use the discrete fundamental harmonic
+frequencies for the periodogram whereas the spectral density is defined over a continuum
+of frequencies.
+ One possible improvement to the periodogram estimate of the spectral density is to
+smoage which creates a smoothed value at time t  by averaging all values between times t – m and t + m (inclusive).
+For example, the smoothing formula for a Daniell kernel with m = 2 is
+ ොoth it using centered moving averages.
+ Smoothing Method (Nonparametric Estimation of the Spectral Density):
+ For a time series (AR model), the Daniell kernel with parameter m is a centered moving
+aver
+ 𝑥𝑡 = (𝑥𝑡−2+𝑥𝑡−1+𝑥𝑡+𝑥𝑡+1+𝑥𝑡+2)/5 −−[1]
+In R, the weighting coefficients for a Daniell kernel with m = 2 can be generated with the
+command kernel ('daniell', 2).
+
+ The subscripts for coef [ ] refer to the time difference from the center of the average at time
+Thus the smoothing formula in this instance is ො 𝑥𝑡 = 0.2𝑥𝑡−2 + 0.2𝑥𝑡−1 + 0.2𝑥𝑡 +
+ 0.2𝑥𝑡+1 + 0.2𝑥𝑡+2,which is same as
+ 1 .
+ The modified Daniell kernel is such that the two endpoints in the averaging receive half the
+weight that the interior points do. For a modified Daniell kernel with m = 2, the smoothing
+is
+ො
+ 𝑥𝑡 =
+ 𝑥𝑡−2 +2𝑥𝑡−1 +2𝑥𝑡 +2𝑥𝑡+1 +𝑥𝑡+2
+ 8
+ =0.125𝑥𝑡−2 +0.25𝑥𝑡−1 +0.25𝑥𝑡 +0.25𝑥𝑡+1 +0.125𝑥𝑡+2
+ In R, the command kernel('modified.daniell', 2) will list the weighting coefficients just
+used.
+ Either the Daniell kernel or the modified Daniell kernel can be convoluted (repeated) so
+that the smoothing is applied again to the smoothed values. This produces a more extensive
+smoothing by averaging over a wider time interval.
+For instance, to repeat a Daniell kernel with m = 2 on the smoothed values that resulted
+from a Daniell kernel with m = 2, the formula would be ෠ ො 𝑥𝑡 =
+ ො
+ 𝑥𝑡−2+ො 𝑥𝑡−1+ො 𝑥𝑡+ො 𝑥𝑡+1+ො 𝑥𝑡+2
+ 5
+ This is the average of the smoothed values within two time periods of time t , in either
+direction.
+ In R, the command kernel('daniell',c(2,2)) will supply the coefficients that would be
+applied to as weights in averaging the original data'
 
 kernel('modified.daniell',c(1,1))
 mspect = spectrum(meas$Cases,log='no',spans=c(2,2),plot=FALSE)
@@ -3132,4 +3281,182 @@ plot(specx[1:100],specy[1:100],xlab='Period (Year)',ylab='SPectral Density',type
 
 }
 
-tslab7()
+
+tsmodelp = function(){
+
+
+  code = cat("'Consider austa, the total international visitors to Australia (in millions) for the
+period 1980-2015.
+a. Use auto.arima() to find an appropriate ARIMA model. What model was
+selected. Check that the residuals look like white noise. Plot forecasts for
+the next 10 periods.
+b. Plot forecasts from an ARIMA(0,1,1) model with no drift and compare
+these to part a. Remove the MA term and plot again.
+c. Plot forecasts from an ARIMA(2,1,3) model with drift. Remove the constant
+and see what happens.
+d. Plot forecasts from an ARIMA(0,0,1) model with a constant. Remove the
+MA term and plot again.
+e. Plot forecasts from an ARIMA(0,2,1) model with no constant.'
+
+
+library(fpp2)
+data = austa
+class(data)
+
+plot(data,col='red')
+
+#a)
+
+fit = auto.arima(data)
+summary(fit)
+
+'ARIMA(0,1,1) with drift '
+
+model_res = fit$residuals
+plot(model_res)
+
+forecastedValues=forecast(fit,10)
+plot(forecastedValues)
+
+Box.test(model_res,lag=5,type = 'Ljung-Box') 'since the p-value 0.9893 is greater than 0.05, the residuals are not significantly different from white noise.'
+Box.test(model_res,lag=10,type = 'Ljung-Box') 'since the p-value 0.9748 is greater than 0.05, the residuals are not significantly different from white noise.'
+Box.test(model$res,lag=15,type = 'Ljung-Box') 'since the p-value 0.7104 is greater than 0.05, the residuals are not significantly different from white noise.'
+
+#b)
+
+fit2 = Arima(data,order = c(0,1,1))
+summary(fit2)
+forecastedValues2 = forecast(fit2,10)
+plot(forecastedValues2)
+
+fit3 = Arima(data,order = c(0,1,0))
+summary(fit3)
+forecastedValues3 = forecast(fit3,10)
+plot(forecastedValues3)
+
+'The ARIMA(0,1,1) model has a lower AIC, indicating a better fit to the data.
+However, the residuals of the ARIMA(0,1,1) model exhibit some autocorrelation (ACF1 = -0.189).
+The ARIMA(0,1,0) model has higher AIC but shows less autocorrelation in residuals (ACF1 = 0.258).
+In practice, you may want to consider both the AIC and the residual diagnostics. If minimizing AIC
+is your primary goal, the ARIMA(0,1,1) model is better. However, if you prioritize white noise residuals,
+the ARIMA(0,1,0) model might be preferred.'
+
+#c)
+
+fit4 = Arima(data,order=c(2,1,3),include.drift=TRUE)
+summary(fit4)
+forecastedValues4 = forecast(fit4,10)
+plot(forecastedValues4)
+
+fit5 = Arima(data,order=c(2,1,3),include.drift=TRUE,include.mean = FALSE)
+summary(fit5)
+forecastedValues5 = forecast(fit5,10)
+plot(forecastedValues5)
+
+#d)
+
+fit6 = Arima(data,order=c(0,0,1),include.mean=TRUE)
+summary(fit6)
+forecastedValues6 = forecast(fit6,10)
+plot(forecastedValues6)
+
+fit7 = Arima(data,order=c(0,0,0),include.mean = TRUE)
+summary(fit7)
+forecastedValues7 = forecast(fit7,10)
+plot(forecastedValues7)
+
+#c)
+
+fit8 = Arima(data,order=c(0,2,1),include.mean = FALSE)
+summary(fit8)
+forecastedValues8 = forecast(fit8,10)
+plot(forecastedValues8)
+
+'Use data set ukcars, the quarterly UK passenger vehicle production data from
+1977Q1–2005Q1.
+a. Plot the data and describe the main features of the series.
+b. Decompose the series using STL and obtain the seasonally adjusted data.
+c. Forecast the next two years of the series using an additive damped trend
+method applied to the seasonally adjusted data. (This can be done in one
+step using stlf() with arguments etsmodel='AAN', damped=TRUE.)
+d. Forecast the next two years of the series using Holt’s linear method applied
+to the seasonally adjusted data (as before but with damped=FALSE).
+e. Now use ets() to choose a seasonal model for the data.
+f.
+Compare the RMSE of the ETS model with the RMSE of the models you
+obtained using STL decompositions. Which gives the better in-sample fits?
+g. Compare the forecasts from the three approaches? Which seems most
+reasonable?
+h. Check the residuals of your preferred model.'
+
+#a)
+
+data = ukcars
+head(data)
+class(data)
+plot(data)
+ggseasonplot(ukcars)
+
+'There is an upward trend, and there is seasonality. The data tends to
+increase between Q1-Q2 and from Q3-Q4, and there is a sharp decrease
+from Q2-Q3.'
+
+#b)
+
+seasonal_adjusted = stl(data, t.window=13, s.window='periodic', robust=TRUE)
+autoplot(seasonal_adjusted)
+
+#c)
+
+stlf_forecast = stlf(data, h=8, etsmodel = 'AAN', damped = TRUE)
+autoplot(stlf_forecast)
+
+#d)
+
+holts_forecast = hw(data, h=8, etsmodel = 'AAN', damped = FALSE)
+autoplot(holts_forecast)
+
+#e)
+
+ets_seasonal_model = ets(data)
+autoplot(forecast(ets_seasonal_model))
+summary(ets_seasonal_model)
+
+#f)
+
+accuracy(ets_seasonal_model)
+accuracy(holts_forecast)
+accuracy(stlf_forecast)
+
+'the ets model was best'
+
+#g)
+
+ets_seasonal_model_forecast = forecast(ets_seasonal_model)
+ets_seasonal_model_forecast
+plot(ets_seasonal_model_forecast)
+
+f.hw.uk = forecast(holts_forecast)
+f.hw.uk
+plot(f.hw.uk)
+
+f.stlf.uk = forecast(stlf_forecast)
+f.stlf.uk
+plot(f.stlf.uk)
+
+'#the ets model is best'
+
+#h)
+
+checkresiduals(ets_seasonal_model_forecast)
+
+'src: https://rpubs.com/kburt13/694287'
+
+
+
+")
+  return(cat(code))
+
+}
+
+tsmodelp()
