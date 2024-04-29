@@ -3318,9 +3318,12 @@ plot(model_res)
 forecastedValues=forecast(fit,10)
 plot(forecastedValues)
 
-Box.test(model_res,lag=5,type = 'Ljung-Box') 'since the p-value 0.9893 is greater than 0.05, the residuals are not significantly different from white noise.'
-Box.test(model_res,lag=10,type = 'Ljung-Box') 'since the p-value 0.9748 is greater than 0.05, the residuals are not significantly different from white noise.'
-Box.test(model$res,lag=15,type = 'Ljung-Box') 'since the p-value 0.7104 is greater than 0.05, the residuals are not significantly different from white noise.'
+Box.test(model_res,lag=5,type = 'Ljung-Box')
+'since the p-value 0.9893 is greater than 0.05, the residuals are not significantly different from white noise.'
+Box.test(model_res,lag=10,type = 'Ljung-Box')
+'since the p-value 0.9748 is greater than 0.05, the residuals are not significantly different from white noise.'
+Box.test(model_res,lag=15,type = 'Ljung-Box')
+'since the p-value 0.7104 is greater than 0.05, the residuals are not significantly different from white noise.'
 
 #b)
 
