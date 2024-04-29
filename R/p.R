@@ -3459,4 +3459,3 @@ checkresiduals(ets_seasonal_model_forecast)
 
 }
 
-tsmodelp()
