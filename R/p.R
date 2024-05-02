@@ -1934,7 +1934,180 @@ qf(0.95,7,6)")
 }
 
 
+
 silab9 = function(){
+
+
+  code = cat("
+# Large Sample Test (Single Mean, Single Proportion, Difference Mean, Difference Proportion)
+
+# One-tailed test with significance level of 0.05 (to the right)
+# critical_value <- qnorm(1-0.05, lower.tail=TRUE)
+# critical_value
+
+#Q1
+#A manufacturer claimed that atleast 9% of the steel pipes which he supplied to a factory confirmed to specifications. An
+#examination of sample of 500 pieces of pipes revealed that 30 were defective. Test at 5% and 1%
+
+#solution
+#H0: p=0.99
+#H1: p<0.99
+p1=470/500
+p=0.99
+q=1-p
+
+z.oneproportion= function(p,P,n){
+  z_one=(p-P)/sqrt(P*(1-P)/n)
+  return(z_one)}
+z1=z.oneproportion(0.94,0.99,500)
+print(z1)
+
+z_cri=qnorm(0.99,0,1) #critical tale at left tailed
+print(z_cri)
+#prop.test(z1,500,0.99,alternative = 'less',conf.level = 0.95)
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+# two proportion formula
+z.twoproportion= function(p1,p2,n1,n2){
+  P=(n1*p1+n2*p2)/(n1+n2)
+  z_two=(p1-p2)/sqrt((P*(1-P))*((1/n1)+(1/n2)))
+
+  return (z_two)}
+
+#Q2 Before an increasing in excise duty on tea, 800 persons out of a sample of 1000 persons were found to be tea drinkers.
+#After an increase in duty, 800 people were tea drinkers in a sample of 1200. State whether there is a significant decrease in
+#consumption of tea after the increase in ecvise duty.
+
+#solution
+#Ho: p1=p2
+#H1: p1>p2
+
+p1=800/1000
+p2=800/1200
+n1=1000
+n2=1200
+
+z1=z.twoproportion(p1,p2,n1,n2)
+z1
+
+#or
+prop.test(x=c(800,800),n=c(1000,1200),alternative = 'greater',correct=F)
+
+z_cri=qnorm(0.95,0,1) #critical tale at left tailed (one tailed so 1.6455)
+print(z_cri)
+
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+#Q3
+# In a random sample of 100 men taken from a village A, 60 were found to be consuming alcohol. In other sample of 200 men are taken
+#from Village B, 100 were found consuming alcihil. Do the two village differ significantly in respect of proportion
+# of men who consume alcohl?
+
+#Solution
+#Ho: p1=p2
+#H1: p1 != p2
+
+p1=60/100;p1
+
+p2=100/200;p2
+
+p=(60+100)/(100+200);p
+
+n1=100
+n2=200
+z1=z.twoproportion(p1,p2,n1,n2)
+print(z1)
+
+z_cri=qnorm(0.025, lower.tail=TRUE)
+print(abs(z_cri))
+
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+#or
+d=prop.test(x=c(60,100),n=c(100,200),alternative = 'two.sided',correct=F)
+d
+
+alpha=0.95
+ifelse (d$p.value>alpha,'Fail to reject Ho','We reject Ho')
+
+#Q4
+# In a referendum submitted by the students to the body at University,850 men and 560 women voted. 500 men and 320 women noted
+#favourably. Does this indicate a significant difference of opinion between men and women on this matter at 1%
+
+
+####SINGLE MEAN #####
+#Q1
+#The mean lifetime of a sample of 100 light tubes produced by a company is found to be 1580 with sd 90.
+#test the hypothesis that the mean lifetime of the tubes producd by company is 1600 hr.
+
+#Solution
+#Ho: mu1=0
+#H1: mu !=0
+z.onemean=function(xbar,mu,sd,n){
+  z_one=(xbar-mu)/(sd/sqrt(n))
+  return(z_one)
+}
+z1<-z.onemean(1580,1600,90,100)
+z1
+
+z_cri=qnorm(0.025, lower.tail=TRUE)
+print(abs(z_cri))
+
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+###DIFFERENCE OF MEANS###
+
+#Q1
+#The buyer of an electricity bulbs bought 100 bulbs each of two famous branss. Upon testing these he found that brand A has a mean
+#lifetime of 1500 hr with sd=50 and brand B has mean lifetime=1530 hr with sd=60. Can it be concluded that at 5% level of significance
+# the two beand differ significantly in quality?
+
+#solution
+#Ho: mu1= mu2
+#H1: mu1 != mu2
+
+z.twomean= function(x1bar,x2bar,mu1,mu2,sd1,sd2,n1,n2){
+  z_2=((x1bar-x2bar)-(mu1-mu2))/(sqrt((sd1^2/n1)+(sd2^1/n2)))
+
+  return(z_2)}
+z1=z.twomean(1500,1530,0,0,50,60,100,100)
+z1
+
+z_cri=qnorm(0.025, lower.tail=TRUE)
+print(abs(z_cri))
+
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+#Q2
+#Intelligence test given for two grps of boys and girls
+#       Mean      S>D        Number
+#Girls   75        10         50
+#Boys    70        12        100
+#is there difference in the mean of boys and girls
+z.twomean= function(x1bar,x2bar,mu1,mu2,sd1,sd2,n1,n2){
+  z_2=((x1bar-x2bar)-(mu1-mu2))/(sqrt((sd1^2/n1)+(sd2^1/n2)))
+
+  return(z_2)}
+z1=z.twomean(75,70,0,0,10,12,50,100)
+z1
+
+z_cri=qnorm(0.025, lower.tail=TRUE)
+print(abs(z_cri))
+
+ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
+
+
+
+")
+
+  return(cat(code))
+
+}
+
+
+
+
+silab10 = function(){
 
 
   code = cat("## Non-Parametric Tests
@@ -2015,6 +2188,90 @@ qchisq(0.90,2) # dof = 3 - 1 = 2
   return(cat(code))
 
 }
+
+
+silab11 = function(){
+
+
+  code = cat("# Chi-Sqauare , Correlation test and Non-parametric test
+
+#1. Fit poisson distribution and test goodness of fit
+x = c(0,1,2,3,4,5)
+f = c(142,156,69,27,5,1)
+
+xbar = sum(x*f)/sum(f) ; xbar
+labmda = xbar
+
+x1 = seq(0,5,by=1)
+f1 = dpois(x1,lambda=xbar) ; f1
+
+exp_f = sum(f)*f1 ; exp_f
+sum(exp_f)
+
+chis = sum((f - exp_f)^2/exp_f) ; chis
+
+qchisq(0.95,1)
+
+# Independence of attributes
+# Suppose we have the following data on consumer preference of a new product collected from the people living in nort and south india
+# number of people who prefer present product: 4 51
+# Number of consumer who preffered new product 14 38
+# Do the data suggest that new product is preffered by the people independent of their region alpha = 0.05.
+
+m = 2
+n = 2
+alpha = 0.05
+data1 = matrix(c(4,51,14,38),ncol=n,byrow=TRUE) ; data1
+cv = chisq.test(data1,correct = T) ; cv
+
+qchisq(0.95,1)
+
+# Correlation test
+
+df = mtcars
+x = df$mpg
+y = df$wt
+result = cor.test(x,y,method = 'pearson'); result
+
+# For each of the three cases aove guess what resullt of a chi-sqaured analysis will be, ignore the warnings for low values in the cells
+# Perform chi-sqaured analysis on the mtcars dataset for each of the three cases above
+
+attach(mtcars)
+vsam = table(vs,am) ; vsam
+chisq.test(vsam)
+# No significant difference on Engine type i.e. vs and Transmission i.e. am
+
+gearCarb = table(gear,carb) ; gearCarb
+chisq.test(gearCarb,correct = T)
+
+# PlantGrowth dataset, we want to know if there is any significant difference between the average weights of plants in the 3 experimental conditions.
+kruskal.test(weight~group,data=PlantGrowth)
+
+# Pairwise Compairision
+library(tidyverse)
+library(rstatix)
+
+pwc = PlantGrowth %>%
+  wilcox.test(weight~group,p.adjust.method='bonferroni')
+pwc
+
+# when you want to make a set of pre-planned pairwise comparisons, the Bonferroni method is best way to apply.
+pairwise.t.test(PlantGrowth$weight,PlantGrowth$group,p.adjust.method = 'bonferroni')
+
+pairwise.t.test(PlantGrowth$weight,PlantGrowth$group,p.adjust.method = 'holm')
+
+library(ggplot2)
+# Test the hypothesis the average miles per gallon for cars with automatic transmission is different from cars with manual transmission in mtcars data
+attach(mtcars)
+t.test(mpg~am,mu=0,conf.level=0.95,altenative='two.sided')
+
+
+")
+
+  return(cat(code))
+
+}
+
 
 
 sipracticelab1 = function(){
@@ -2273,7 +2530,385 @@ return(cat(code))
 }
 
 
+silabexercises1to6 = function(){
 
+
+  code = cat("# Question 1
+'Find the p-value associated with a z-score of 2.3 in a right-tailed hypothesis test'
+pnorm(2.3, lower.tail = FALSE)  # right-tailed
+
+# Question 2
+'Find the p-value associated with a z-score of -0.79 in a left-tailed hypothesis test'
+pnorm(-0.79)  # left-tailed
+
+# Question 3
+'Find the p-value associated with a t-score of 2.0 in a two-tailed hypothesis test'
+2 * pt(-2.0, df = Inf)  # two-tailed
+
+# Question 4
+'The standard deviation of test scores on a certain achievement test is 11 .3. If a random sample
+of 81 students had a sample mean score of 74.6, find a 95 percent confidence interval estimate
+for the average score of all students'
+n <- 81
+xbar <- 74.6
+s <- 11.3
+mu <- qnorm(0.975) * (s / sqrt(n))
+c(xbar - mu, xbar + mu)  # 95% CI
+
+# Question 5
+'Each of 20 science students independently measured the melting point of lead. The sample
+mean and sample standard deviation of these measurements were (i n degrees centigrade) 330.2
+and 15.4, respectively. Construct (a) a 90 percent and (b) a 98 percent confidence interval
+estimate of the true melting point of lead'
+n <- 20
+xbar <- 330.2
+s <- 15.4
+# a) 90% CI
+mu <- qt(0.95, df = n - 1) * (s / sqrt(n))
+c(xbar - mu, xbar + mu)
+
+# b) 98% CI
+mu <- qt(0.99, df = n - 1) * (s / sqrt(n))
+c(xbar - mu, xbar + mu)
+
+# Question 6
+'A random sample of 300 bulbs contained 13 defective bulbs. Find 90% and 95% confidence
+interval for the proportion of defective bulbs in the population.'
+x <- 13  # defective bulbs
+n <- 300  # sample size
+p_hat <- x / n
+# 90% CI
+mu <- qnorm(0.95) * sqrt(p_hat * (1 - p_hat) / n)
+c(p_hat - mu, p_hat + mu)
+
+# 95% CI
+mu <- qnorm(0.975) * sqrt(p_hat * (1 - p_hat) / n)
+c(p_hat - mu, p_hat + mu)
+
+# Question 7
+'A civil engineer wishes to measure the compressive strength of two different types of concrete.
+A random sample of 10 specimens of the first type yielded the following data (in psi)
+Type 1: 3,250, 3,268, 4,302, 3,184, 3,266 3,297, 3,332, 3,502, 3,064, 3,116
+whereas a sample of 10 specimens of the second yielded the data
+Type 2: 3,094, 3,106, 3,004, 3,066, 2,984, 3,124, 3,316, 3,212, 3,380, 3,018
+If we assume that the samples are normal with a common variance, determine a 95 percent twosided confidence interval for μ1 −μ2, the difference in mean.'
+x1 <- c(3250, 3268, 4302, 3184, 3266, 3297, 3332, 3502, 3064, 3116)
+x2 <- c(3094, 3106, 3004, 3066, 2984, 3124, 3316, 3212, 3380, 3018)
+n1 <- length(x1)
+n2 <- length(x2)
+xbar1 <- mean(x1)
+xbar2 <- mean(x2)
+s1 <- sd(x1)
+s2 <- sd(x2)
+sp <- sqrt(((n1 - 1) * s1^2 + (n2 - 1) * s2^2) / (n1 + n2 - 2))
+mu <- qt(0.975, df = n1 + n2 - 2) * sp * sqrt(1 / n1 + 1 / n2)
+c(xbar1 - xbar2 - mu, xbar1 - xbar2 + mu)  # 95% CI
+
+# Question 8
+'Two brands of refrigerators, denoted A and B, are each guaranteed for 1 year. In a random
+sample of 50 refrigerators of brand A, 12 were observed to f ail before the guarantee period
+ended. An independent random sample of 60 brand B refrigerators also revealed 12 failures
+during the guarantee period. Estimate the true difference (p1 − p2) between proportions of
+failures during the guarantee period, with confidence coefficient approximately .98.'
+x1 <- 12  # failures for brand A
+n1 <- 50
+p1_hat <- x1 / n1
+x2 <- 12  # failures for brand B
+n2 <- 60
+p2_hat <- x2 / n2
+p_hat <- (x1 + x2) / (n1 + n2)
+mu <- qnorm(0.99) * sqrt(p_hat * (1 - p_hat) * (1 / n1 + 1 / n2))
+c(p1_hat - p2_hat - mu, p1_hat - p2_hat + mu)  # 98% CI
+
+
+#-----------------------------------Lab exercise 2--------------------------------------#
+# Question 1
+'.An ambulance service claims that at least 45 percent of its calls involve life threatening
+emergencies. To check this claim, a random sample of 200 calls was selected from the service’s
+files. If 70 of these calls involved lifethreatening emergencies, is the service’s claim believable at
+the (a) 5% level of significance; (b) 1% level of significance?'
+x <- 70  # life-threatening emergencies
+n <- 200
+p_hat <- x / n
+# a) 5% level
+mu <- qnorm(0.975) * sqrt(p_hat * (1 - p_hat) / n)
+p_value <- pnorm(p_hat, mean = 0.45, sd = sqrt(0.45 * 0.55 / n))
+p_value
+
+# b) 1% level
+mu <- qnorm(0.995) * sqrt(p_hat * (1 - p_hat) / n)
+p_value <- pnorm(p_hat, mean = 0.45, sd = sqrt(0.45 * 0.55 / n))
+p_value
+
+# Question 2
+'.A standard drug is known to be effective in 75 percent of the cases in which it is used to treat a
+certain infection. A new drug has been developed and has been found to be effective in 42 cases
+out of 50. Based on this, would you accept, at the 5 percent level of significance, the hypothesis
+that the two drugs are of equal effectiveness?'
+x1 <- 42
+n1 <- 50
+p1_hat <- x1 / n1
+p2 <- 0.75
+p_value <- pbinom(x1, n1, p2, lower.tail = FALSE)  # right-tailed
+p_value
+
+# Question 3
+'Given a data set of 100 healthy body temperatures, where the mean was 98.2 ▫ and s= 0.62▫, at
+the 0.05 significance level, test the claim that the mean body temperature of all healthy adults is
+equal to 98.6'
+xbar <- 98.2
+s <- 0.62
+n <- 100
+mu0 <- 98.6
+mu <- qnorm(0.975) * (s / sqrt(n))
+p_value <- 2 * pnorm(xbar, mean = mu0, sd = s / sqrt(n))  # two-tailed
+p_value
+
+# Question 4
+'.The mean breaking strength of a certain type of fiber is required to be at least 200 psi. Past
+experience indicates that the standard deviation of breaking strength is 5 psi. If a sample of 8
+pieces of fiber yielded breakage at the following pressures 210 198 195 202 197.4 196 199 195.5
+would you conclude, at the 5 percent level of significance, that the fiber is unacceptable? What
+about at the 10 percent level of significance?'
+x <- c(210, 198, 195, 202, 197.4, 196, 199, 195.5)
+n <- length(x)
+xbar <- mean(x)
+s <- sd(x)
+mu0 <- 200
+# a) 5% level
+mu <- qt(0.975, df = n - 1) * (s / sqrt(n))
+p_value <- pt((xbar - mu0) / (s / sqrt(n)), df = n - 1, lower.tail = FALSE)  # one-tailed
+p_value
+
+# b) 10% level
+mu <- qt(0.95, df = n - 1) * (s / sqrt(n))
+p_value <- pt((xbar - mu0) / (s / sqrt(n)), df = n - 1, lower.tail = FALSE)  # one-tailed
+p_value
+
+# Question 5
+'An IQ test was given to a large group of boys in the age group of 18–20 years, who scored an
+average of 62.5 marks. The same test was given to a fresh group of 100 boys of the same age
+group. They scored an average of 64.5 marks with a SD 12.5 marks. Can we conclude that the
+fresh group of boys have better IQ?'
+xbar1 <- 62.5
+xbar2 <- 64.5
+n2 <- 100
+s2 <- 12.5
+mu <- qt(0.975, df = n2 - 1) * (s2 / sqrt(n2))
+p_value <- pt((xbar2 - xbar1) / (s2 / sqrt(n2)), df = n2 - 1, lower.tail = FALSE)  # one-tailed
+p_value
+
+# Question 6
+'A question of medical importance is whether jogging leads to a reduction in one’s pulse rate.
+To test this hypothesis, 7 non-jogging volunteers agreed to begin a 1-month jogging program.
+After the month their pulse rates were determined and compared with their earlier values. If the
+data are as follows, can we conclude that jogging has had an effect on the pulse rates?
+Subject 1 2 3 4 5 6 7
+Pulse Rate Before: 74 86 98 102 78 84 79
+Pulse Rate After: 70 85 90 110 71 80 69'
+before <- c(74, 86, 98, 102, 78, 84, 79)
+after <- c(70, 85, 90, 110, 71, 80, 69)
+n <- length(before)
+d <- before - after
+xbar_d <- mean(d)
+s_d <- sd(d)
+mu0 <- 0
+mu <- qt(0.975, df = n - 1) * (s_d / sqrt(n))
+p_value <- pt(xbar_d / (s_d / sqrt(n)), df = n - 1, lower.tail = FALSE)  # one-tailed
+p_value
+
+#-----------------------------------Lab exercise 3--------------------------------------#
+# Question 1
+'A company produces machined engine parts that are supposed to have a diameter variance no
+larger than 0.0002 (diameters measured in inches). A random s ample of ten parts gave a sample
+variance of 0.0003. Test, at the 5% level, H0:sigma^2= 0.0002 against H1:sigma^2> 0.0002.'
+n <- 10
+xbar <- 0.0003
+mu0 <- 0.0002
+s <- sqrt(xbar)
+mu <- qt(0.95, df = n - 1) * (s / sqrt(n))
+p_value <- pt((xbar - mu0) / (s / sqrt(n)), df = n - 1, lower.tail = FALSE)  # one-tailed
+p_value
+
+# Question 2
+'Data for two random samples drawn from normal population are as follows
+Sample 1 20 16 26 27 23 22 18 24 25 19
+Sample 2 27 33 42 35 32 34 38 28 43 41 30 37
+Obtain estimates of the variances of the population and test whether the two populations have the
+same variance?'
+x1 <- c(20, 16, 26, 27, 23, 22, 18, 24, 25, 19)
+x2 <- c(27, 33, 42, 35, 32, 34, 38, 28, 43, 41, 30, 37)
+n1 <- length(x1)
+n2 <- length(x2)
+s1 <- var(x1)
+s2 <- var(x2)
+f_value <- s1 / s2
+p_value <- 2 * pf(f_value, df1 = n1 - 1, df2 = n2 - 1, lower.tail = FALSE)  # two-tailed
+p_value
+
+# Question 3
+' A certain drug is claimed to be effective in curing cold. In an experiment on 500 persons with
+cold, half of them were given the drug and half of them were given the sugar pills. The patients’
+reaction to the treatment are recorded in the following table
+ Helped Harmed No effect
+Drug:        150 30 70
+Sugar pills: 130 40 80
+On the basis of this data, can it be concluded that the drug and sugar pills differ significantly in
+curing cold?
+'
+data <- matrix(c(150, 30, 70, 130, 40, 80), nrow = 2, byrow = TRUE)
+chisq.test(data)
+
+
+#------------------------------------Lab exercise 4-------------------------------------#
+# Question 1
+'Let X be the number of defects in printed circuit boards. A random sample of n= 60 printed
+circuit boards is taken and the number of defects recorded. The results were as follows:
+ Number of Defects : 0 1 2 3 4
+ Observed Frequency : 32 15 9 4 1
+ Suppose Poisson model might be a good model for this dataset, estimate the parameter λ
+(maximum likelihood).'
+x <- c(32, 15, 9, 4, 1)
+lambda <- mean(x)
+sum(dpois(0:4, lambda) * c(32, 15, 9, 4, 1))  # likelihood
+
+# Question 2
+'The shear strength of each of 12 test spots welds is determined, yielding the following data(psi)
+392 376 401 367 389 362 376 412 409 415 358 375 Assuming that shear strength is normally
+distributed, estimate the true average shear strength and standard deviation of shear strength
+using method of maximum likelihood.
+'
+x <- c(392, 376, 401, 367, 389, 362, 376, 412, 409, 415, 358, 375)
+n <- length(x)
+xbar <- mean(x)
+s <- sd(x)
+sum(dnorm(x, mean = xbar, sd = s))  # likelihood
+x <- c(5, 4, 3, 4, 5, 6, 3, 4)
+lambda <- 1 / mean(x)
+sum(dexp(x, rate = lambda))  # likelihood
+
+# Question 4
+'A company is introducing a job evaluation scheme in which all jobs are graded by points for
+skill, responsibility, and so on. Monthly pay scales (Rs. in 1000’s) are then drawn up according
+to the number of points allocated and other factors such as experience and local conditions. To
+date the company has applied this scheme to 8 jobs:
+Job : A B C D E F G H
+Points : 5 25 7 19 10 12 15 28
+Pay (Rs.) : 3.0 5.0 3.2 5 6.5 5.5 5.6 6.0
+(a) Find the least squares regression line for linking pay scales to points.
+(b) Estimate the monthly pay for a job graded by 18 points
+(c) Also find residual, mean square error'
+points <- c(5, 25, 7, 19, 10, 12, 15, 28)
+pay <- c(3.0, 5.0, 3.2, 5, 6.5, 5.5, 5.6, 6.0)
+lm_fit <- lm(pay ~ points)
+summary(lm_fit)  # a) regression line
+
+new_points <- 18
+predict(lm_fit, data.frame(points = new_points))  # b) estimated pay
+
+resid <- residuals(lm_fit)
+mean((resid)^2)  # c) mean square error
+
+
+
+
+#-------------------------------------Lab exercise 5------------------------------------#
+library(BSDA)
+library(magrittr)
+library(DescTools)
+
+# Question 1
+'The breaking strengths of a random sample of 25 ropes made by a manufacturer are given
+in the following table . On the basis of this sample, test at the 0.05 significance level the
+manufacturer’s claim that the breaking strength of a rope is (a) 25, (b) 30
+41, 28, 35, 38, 23, 37, 32, 24, 46, 30, 25, 36, 22, 41, 37, 43, 27, 34, 27, 36, 42, 33, 28, 31,
+24.'
+x <- c(41, 28, 35, 38, 23, 37, 32, 24, 46, 30, 25, 36, 22, 41, 37, 43, 27, 34, 27, 36, 42, 33, 28, 31, 24)
+wilcox.test(x, mu = 25, alternative = 'greater')  # a)
+
+wilcox.test(x, mu = 30, alternative = 'two.sided')  # b)
+
+# Question 2
+'Instructors A and B both teach a first course in chemistry at XYZ University. On a
+common final examination, their students received the grades shown in the following
+Table. Test at the 0.05 significance level the hypothesis that there is no difference
+between the two instructor’s grades.
+A: 88 75 92 71 63 84 55 64 82 96
+B: 72 65 84 53 76 80 51 60 57 85 94 87 73 61
+'
+x1 <- c(88, 75, 92, 71, 63, 84, 55, 64, 82, 96)
+x2 <- c(72, 65, 84, 53, 76, 80, 51, 60, 57, 85, 94, 87, 73, 61)
+wilcox.test(x1, x2)
+
+# Question 3
+'The data for this example consists of three samples of scores representing reduction in
+pain, for each treatment group: A, B and C. We want to test, at the 15% level, whether
+the reduction in pain differs across treatments.
+Treatment A: 4.4, 4.3, 5.2, 4.5, 4.1
+Treatment B: 5.5, 4.8, 5.4, 5.8, 4.9
+Treatment C: 4.6, 4.9, 5.3, 5.1, 5.2'
+x1 <- c(4.4, 4.3, 5.2, 4.5, 4.1)
+x2 <- c(5.5, 4.8, 5.4, 5.8, 4.9)
+x3 <- c(4.6, 4.9, 5.3, 5.1, 5.2)
+kruskal.test(list(x1, x2, x3))
+
+# Question 4
+'Twenty-five individuals were sampled as to whether they liked or did not like a product
+(indicated by Y and N, respectively). The resulting sample is shown by the following
+sequence: YYNNNNYYYNYNNYNNNNNYYYYNN (a) Determine the number of
+runs, V. (b) Test at the 0.05 significance level whether the responses are random'
+x <- c('Y', 'Y', 'N', 'N', 'N', 'N', 'Y', 'Y', 'Y', 'N', 'Y', 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 'Y', 'Y', 'N', 'N')
+RunsTest(x)
+
+# Question 5
+'Take airquality dataset in R and apply correlation test for the columns Wind and Temp'
+data('airquality')
+cor.test(airquality$Wind, airquality$Temp)
+
+
+#-------------------------------------Lab exercise 6------------------------------------#
+# Question 1
+'Use simulation to show that the sample mean is an unbiased estimator for the population
+mean μ, when ,…, is a random sample from an exponential random variable with
+rate 4.'
+n <- 1000
+mu <- 0.25  # true mean for exp(4)
+sample_means <- rep(NA, n)
+for (i in 1:n) {
+  x <- rexp(1000, rate = 4)
+  sample_means[i] <- mean(x)
+}
+mean(sample_means)  # should be close to mu
+
+# Question 2
+'Use simulation to determine whether S seems to be a consistent estimator for σ when
+sampling from a normal distribution with μ=2 and σ = 4.
+(a)Use ϵ=0.5 and try N values of c(10, 50, 100, 500, 1000). (b) Use ϵ=0.3 and find a
+sequence of N values.'
+n_values <- c(10, 50, 100, 500, 1000)
+mu <- 2
+sigma <- 4
+epsilon <- 0.5
+for (n in n_values) {
+  x <- rnorm(n, mean = mu, sd = sigma)
+  s <- sd(x)
+  bias <- abs(s - sigma) / sigma
+  cat('n =', n, 'bias =', bias, '\n')
+}
+
+epsilon <- 0.3
+n_values <- c(10, 50, 100, 500, 1000, 5000, 10000)
+for (n in n_values) {
+  x <- rnorm(n, mean = mu, sd = sigma)
+  s <- sd(x)
+  bias <- abs(s - sigma) / sigma
+  cat('n =', n, 'bias =', bias, '\n')
+}
+
+")
+  return(cat(code))
+
+}
 
 mllab1 = function(){
 
@@ -2679,8 +3314,6 @@ spec_clusters$centers
   return(cat(code))
 
 }
-
-
 
 
 mllab9 = function(){
