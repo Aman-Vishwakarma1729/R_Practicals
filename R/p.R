@@ -74,8 +74,6 @@ summary(mlm)')
   return(cat(code))
 
 }
-
-
 ralab2 = function(){
   code = cat("## # Experiment-1
 # Correlation Analysis using scatter diagram, Karl Pearson's correlation coefficient and drawing inferrence for given data-set.
@@ -179,8 +177,6 @@ ggcorrplot(cor10,hc.order=TRUE,type='lower',lab=TRUE)")
   return(cat(code))
 
 }
-
-
 ralab3 = function(){
 
   code = cat("#Experiment-2;
@@ -496,8 +492,6 @@ method','Drift method', 'Seasonal naïve method'),bty = 'n')")
   return(cat(code))
 
 }
-
-
 ralab4 = function(){
 
   code = cat("
@@ -659,8 +653,6 @@ confint(linear_Model)
   return(cat(code))
 
 }
-
-
 ralab5 = function(){
 
   code = cat("
@@ -743,8 +735,6 @@ predict(sm_lm,newdata,interval = 'prediction')
   return(cat(code))
 
 }
-
-
 ralab6 = function(){
 
   code = cat("
@@ -877,9 +867,6 @@ conf_y=predict(model2,new_values,interval='confidence');conf_y
   return(cat(code))
 
 }
-
-
-
 ralab7 = function(){
 
   code = cat("
@@ -940,8 +927,6 @@ our regression model. '
   return(cat(code))
 
 }
-
-
 ralab8 = function(){
 
   code = cat("
@@ -1123,7 +1108,6 @@ plot(k8)
   return(cat(code))
 
 }
-
 ralab9 = function(){
 
   code = cat("
@@ -1185,8 +1169,6 @@ lines(week_val,mass_val,col='blue',lwd=2)
 
 }
 
-
-
 silab1 = function(){
 
   code = cat('dataset = iris
@@ -1242,8 +1224,6 @@ plot.ci(samp, mu = mu)')
 
   return(cat(code))
 }
-
-
 silab2 = function(){
 
 
@@ -1402,9 +1382,6 @@ pnorm(q=-0.77, lower.tail=TRUE)
   return(cat(code))
 
 }
-
-
-
 silab3 = function(){
 
 
@@ -1558,8 +1535,6 @@ glue('({(p1-p2) - ME}, {(p1-p2) + ME})')")
   return(cat(code))
 
 }
-
-
 silab4 = function(){
 
 
@@ -1594,8 +1569,6 @@ plot(density(simu_data),main = 'SAMPLING DISTRIBUTION OF SAMPLE MEAN',col = 'red
   return(cat(code))
 
 }
-
-
 silab5 = function(){
 
 
@@ -1650,8 +1623,6 @@ summary(mle)")
   return(cat(code))
 
 }
-
-
 silab6 = function(){
 
 
@@ -1760,8 +1731,6 @@ print(paste('Estimated parameter 2 through MOM:', var_hat))
   return(cat(code))
 
 }
-
-
 silab7 = function(){
 
 
@@ -1864,8 +1833,6 @@ print(z_cri)
   return(cat(code))
 
 }
-
-
 silab8 = function(){
 
 
@@ -1932,9 +1899,6 @@ qf(0.95,7,6)")
   return(cat(code))
 
 }
-
-
-
 silab9 = function(){
 
 
@@ -2103,10 +2067,6 @@ ifelse(abs(z1)>abs(z_cri),'We reject Ho','We fail to reject Ho')
   return(cat(code))
 
 }
-
-
-
-
 silab10 = function(){
 
 
@@ -2188,8 +2148,6 @@ qchisq(0.90,2) # dof = 3 - 1 = 2
   return(cat(code))
 
 }
-
-
 silab11 = function(){
 
 
@@ -2271,9 +2229,6 @@ t.test(mpg~am,mu=0,conf.level=0.95,altenative='two.sided')
   return(cat(code))
 
 }
-
-
-
 sipracticelab1 = function(){
 
 
@@ -2432,10 +2387,6 @@ glue('({(xbar1-xbar2) - ME}, {(xbar1-xbar2) + ME})')
   return(cat(code))
 
 }
-
-
-
-
 sipracticelab2 = function(){
 
 
@@ -2528,8 +2479,6 @@ glue('({(p1-p2) - ME}, {(p1-p2) + ME})')")
 return(cat(code))
 
 }
-
-
 silabexercises1to6 = function(){
 
 
@@ -2984,8 +2933,6 @@ dir()")
   return(cat(code))
 
 }
-
-
 mllab2 = function(){
 
 
@@ -3036,8 +2983,6 @@ f")
   return(cat(code))
 
 }
-
-
 mllab3 = function(){
 
 
@@ -3065,8 +3010,6 @@ abline(v=0,h=0)")
   return(cat(code))
 
 }
-
-
 mllab4 = function(){
 
 
@@ -3109,8 +3052,6 @@ head(log_predictions_rd,10)")
   return(cat(code))
 
 }
-
-
 mllab5 = function(){
 
 
@@ -3174,8 +3115,6 @@ record")
   return(cat(code))
 
 }
-
-
 mllab6 = function(){
 
 
@@ -3242,8 +3181,6 @@ table(dvcut)
   return(cat(code))
 
 }
-
-
 mllab7 = function(){
 
 
@@ -3314,8 +3251,6 @@ spec_clusters$centers
   return(cat(code))
 
 }
-
-
 mllab9 = function(){
 
 
@@ -3362,8 +3297,6 @@ plot(svmfit,data)
   return(cat(code))
 
 }
-
-
 mllab10 = function(){
 
 
@@ -3399,7 +3332,6 @@ enorm(x,method='mle')
   return(cat(code))
 
 }
-
 
 tslab1 = function(){
 
@@ -3500,9 +3432,6 @@ ts.plot(X,main = 'Random walk process')")
   return(cat(code))
 
 }
-
-
-
 tslab2 = function(){
 
 
@@ -3522,9 +3451,6 @@ par(opar)
   return(cat(code))
 
 }
-
-
-
 tslab3 = function(){
 
 
@@ -3634,9 +3560,6 @@ plot(fit)
   return(cat(code))
 
 }
-
-
-
 tslab4 = function(){
 
 
@@ -3698,8 +3621,6 @@ acf(y1)
   return(cat(code))
 
 }
-
-
 tslab5 = function(){
 
 
@@ -3730,8 +3651,6 @@ plot(forecastedValues,main='Graph with forecasting',col.main='darkgreen')
   return(cat(code))
 
 }
-
-
 tslab6 = function(){
 
 
@@ -3807,8 +3726,6 @@ Box.test(model$resid,lag=15,type = 'Ljung-Box')
   return(cat(code))
 
 }
-
-
 tslab7 = function(){
 
 
@@ -3913,8 +3830,6 @@ plot(specx[1:100],specy[1:100],xlab='Period (Year)',ylab='SPectral Density',type
   return(cat(code))
 
 }
-
-
 tsmodelp = function(){
 
 
@@ -4095,3 +4010,441 @@ checkresiduals(ets_seasonal_model_forecast)
 
 }
 
+#-----------------------------------------------------#--------------------------------------------------------#
+
+sqclab1 = function(){
+
+
+  code = cat("
+
+library(qcc)
+
+# x-bar chart
+data(pistonrings)
+head(pistonrings)
+
+diameter = with(pistonrings, qcc.groups(diameter, sample))
+head(diameter)
+
+q1 = qcc(diameter[1:25,], type='xbar', newdata=diameter[26:40,])
+plot(q1, chart.all=FALSE)
+plot(q1, add.stats=FALSE)
+
+# Add warning limits at 2 std. deviations:
+q1 = qcc(diameter[1:25,], type='xbar', newdata=diameter[26:40,], plot=TRUE)
+(warn.limits = limits.xbar(q1$center, q1$std.dev, q1$sizes, 2))
+
+plot(q1, restore.par = FALSE)
+abline(h = warn.limits, lty = 3, col = 'chocolate')
+
+# R-chart
+q2 = qcc(diameter[1:25,], type='R')
+summary(q2)
+
+q3 = qcc(diameter[1:25,], type='R', newdata=diameter[26:40,])
+summary(q3)
+
+# S-chart
+q4 = qcc(diameter[1:25,], type='S')
+summary(q4)
+
+q5 = qcc(diameter[1:25,], type='S', newdata=diameter[26:40,])
+summary(q5)
+
+# Variable control limits
+out = c(9, 10, 30, 35, 45, 64, 65, 74, 75, 85, 99, 100)
+diameter2 = with(pistonrings, qcc.groups(diameter[-out], sample[-out]))
+summary(qcc(diameter2[1:25,], type='xbar'))
+
+summary(qcc(diameter2[1:25,], type='R'))
+
+data('warpbreaks')
+warpbreaks$sample <- rep(1:9, each = 6)
+head(warpbreaks)
+
+# x-bar chart
+breaks = with(warpbreaks, qcc.groups(breaks, sample))
+head(breaks)
+
+q6 = qcc(breaks[1:5,], type='xbar', newdata=breaks[6:9,])
+
+plot(q6, chart.all=FALSE)
+
+plot(q6, add.stats=FALSE)
+
+# Add warning limits at 2 std. deviations:
+q7 = qcc(breaks[1:5,], type='xbar', newdata=diameter[6:9,], plot=TRUE)
+
+(warn.limits = limits.xbar(q7$center, q7$std.dev, q7$sizes, 2))
+
+plot(q7, restore.par = FALSE)
+abline(h = warn.limits, lty = 3, col = 'chocolate')
+
+# R-chart
+q8 = qcc(breaks[1:5,], type='R')
+summary(q8)
+
+q9 = qcc(breaks[1:5,], type='R', newdata=breaks[6:9,])
+summary(q9)
+
+# S-chart
+q10 = qcc(breaks[1:5,], type='S')
+summary(q10)
+
+q11 = qcc(breaks[1:5,], type='S', newdata=breaks[6:9,])
+summary(q11)
+
+
+")
+  return(cat(code))
+
+}
+sqclab2 = function(){
+
+
+  code = cat("
+
+## p and np chart for constant sample size
+Di = c(38,49,53,37,29,24,25,62,50,41,29,21,67,53,44,36,39,81,57,48);Di
+
+library(qcc)
+
+q1 = qcc(Di,sizes=1000, type='p')  # p-chart
+summary(q1)
+
+q2 = qcc(Di,sizes=1000, type='np') # np-chart
+summary(q2)
+
+sample_sizes = c(3800,4090,5003,3070,2900,2004,2005,6002,5000,4001,2009,2001,6007,5300,4400,3600,3009,8001,5700,4800)
+q3 = qcc(Di,sizes=sample_sizes, type='p')  # p-chart
+summary(q3)
+
+q4 = qcc(Di,sizes=sample_sizes, type='np') # np-chart
+summary(q4)
+
+")
+  return(cat(code))
+
+}
+sqclab3 = function(){
+
+
+  code = cat("
+
+library(qcc)
+
+## CUSUM
+# Example-1
+potassium_per_unit = c(0.235,0.222,0.198,0.227,0.199,0.242,0.206,0.197,0.221,0.212,0.231,0.246,0.249,0.245,0.255)
+q2 <- cusum(potassium_per_unit, center = 0.21,decision.interval = 4)
+
+## EWMA
+# Example-1
+potassium_per_unit = c(52,47,53,49.3,50.1,49,51,50.1,51.2,50.5,47.6,49.6,49.9,51.3,47.8,51.2,52.6,52.4,53.6,52.1)
+q4 <- ewma(potassium_per_unit, lambda = 0.3, nsigmas = 3)
+
+##Hotteling T^2
+library(IQCC)
+library(qcr)
+
+# Example-1
+X1 <- matrix(c(72, 56, 55, 44, 97, 83, 47, 88, 57, 26, 46,
+               49, 71, 71, 67, 55, 49, 72, 61, 35, 84, 87, 73, 80, 26, 89, 66,
+               50, 47, 39, 27, 62, 63, 58, 69, 63, 51, 80, 74, 38, 79, 33, 22,
+               54, 48, 91, 53, 84, 41, 52, 63, 78, 82, 69, 70, 72, 55, 61, 62,
+               41, 49, 42, 60, 74, 58, 62, 58, 69, 46, 48, 34, 87, 55, 70, 94,
+               49, 76, 59, 57, 46), ncol = 4)
+X2 <- matrix(c(23, 14, 13, 9, 36, 30, 12, 31, 14, 7, 10,
+               11, 22, 21, 18, 15, 13, 22, 19, 10, 30, 31, 22, 28, 10, 35, 18,
+               11, 10, 11, 8, 20, 16, 19, 19, 16, 14, 28, 20, 11, 28, 8, 6,
+               15, 14, 36, 14, 30, 8, 35, 19, 27, 31, 17, 18, 20, 16, 18, 16,
+               13, 10, 9, 16, 25, 15, 18, 16, 19, 10, 30, 9, 31, 15, 20, 35,
+               12, 26, 17, 14, 16), ncol = 4)
+X <- list(X1 = X1, X2 = X2)
+q5 <- mqcc(X, type = 'T2')
+
+# Example-2
+
+X1 = matrix(c(7.75,8.50,7.50,8.25,7.50,7.60,7.90,8.10,8.10,7.70,8.30,8.15,7.70,7.55,8.50,8.20,8.55,7.65,8.40))
+X2 = matrix(c(5.48,5.98,4.12,5.34,4.36,4.26,4.50,5.16,5.56,4.08,5.58,5.44,4.34,4.08,5.96,5.80,5.94,4.80,5.86))
+X <- list(X1 = X1, X2 = X2)
+q6 <- mqcc(X, type = 'T2')
+
+")
+  return(cat(code))
+
+}
+sqclab4 = function(){
+
+  code = cat("
+
+## Lab4 SQC Process Capability
+library(qcc)
+data('pistonrings')
+head(pistonrings)
+
+attach(pistonrings)
+diameter <- qcc.groups(diameter, sample)
+q1 <- qcc(diameter[1:25,], type='xbar', nsigmas=3,plot=T)
+
+process.capability(q1, spec.limits=c(73.95,74.05))
+
+process.capability(q1, spec.limits=c(73.95,74.05), target=74.02)
+
+process.capability(q1, spec.limits=c(73.99,74.01))
+
+process.capability(q1, spec.limits = c(73.99, 74.1))
+
+# manual
+U <- 74.05
+L <- 73.95
+std <- q1$std.dev
+
+C_p <- (U-L)/(6*std)
+C_p
+
+Cp_l <- (q1$center - L)/(3*std)
+Cp_l
+
+Cp_u <- (U - q1$center)/(3*std)
+Cp_u
+
+Cp_k <- min(Cp_u, Cp_l)
+Cp_k
+
+Cpm <- C_p / sqrt(1+((q1$center-74)/std)^2)
+Cpm
+
+Cpkm <- Cp_k / sqrt(1+((q1$center-74)/std)^2)
+Cpkm
+## Dataset 2
+data <- c(12.62,12.7,12.62,12.62,12.65,12.63,12.56,12.59,12.6,12.6,12.62,12.56,12.58,12.57,12.59,12.61,12.66,12.61,12.62,12.62,12.59,12.58,12.59,12.57,12.58,12.57,12.63,12.6,12.6,12.6,12.57,12.56,12.59,12.61,12.58,12.58,12.57,12.6,12.6,12.59,12.61,12.6,12.6,12.62,12.62,12.56,12.59,12.58,12.62,12.58)
+df <- matrix(data, nrow = 5, ncol = 10, byrow = F)
+
+q2 <- qcc(df, type = 'xbar', nsigmas = 3)
+process.capability(q2, spec.limits = q2$limits)
+
+
+
+
+")
+  return(cat(code))
+
+}
+sqclab5 = function(){
+
+
+  code = cat("
+
+#Care was taken to operate a metal casting process so that no assignable causes of variation were introduced and randomly selected castings were weighted. The target weight of the casting is 28 kgs. The following weights came from 30 random observations:
+obs=c(28.00, 28.03, 28.04, 27.99, 28.01, 27.96, 28.03, 27.98, 28.03, 27.98, 28.02, 28.00, 27.98, 28.02, 28.05, 28.04, 28.01, 27.94, 28.01, 27.98, 28.00, 28.02, 27.99, 28.03, 28.03, 28.01, 27.99, 28.02, 27.96, 27.96)
+#Find out the PCIs with specfication limits 28 +- 0.1
+mean=mean(obs)
+LCL = 27.9
+UCL = 28.1
+std.dev = sd(obs)
+target = 28.00
+
+Cp = (UCL- LCL)/(6 * std.dev); Cp
+
+Cp_l = (mean - LCL)/(3 * std.dev); Cp_l
+
+Cp_u = (UCL - mean)/(3 * std.dev); Cp_u
+
+Cp_k = min(Cp_l, Cp_u); Cp_k
+
+Cp_m = Cp / sqrt(1 + (((mean-target)/std.dev)^2)); Cp_m
+
+Cp_km = Cp_k / sqrt(1 + (((mean-target)/std.dev)^2)); Cp_km
+
+#Dividing in subgroups and finding the PCIs
+library(qcc)
+
+data=matrix(obs, nrow=6, ncol=5)
+data
+
+q1=qcc(data, type='xbar',plot=FALSE)
+process.capability(q1, spec.limits = q1$limits, target = 28.00)
+
+")
+  return(cat(code))
+
+}
+sqclab6 = function(){
+
+
+  code = cat("
+
+
+library(AcceptanceSampling)
+x = OC2c(10, 3);x
+plot(x)
+grid(lty='solid')
+
+xb <- OC2c(5, 1, type='b') ## Binomial
+xh <- OC2c(5, 1, type='h', N=50, pd=(0:50)/50) ## Hypergeometric
+xp <- OC2c(5, 1, type='p') ## Poisson
+plot(xb, type='l', xlim=c(0, 0.2), ylim=c(0.6, 1))
+grid(lty='solid')
+points(xh@pd, xh@paccept, col='green')
+lines(xp@pd, xp@paccept, col='red')
+
+## A standard binomial sampling plan
+x <- OC2c(10,1)
+x ## print out a brief summary
+
+plot(x, xlim=c(0,0.5)) ## plot the useful part of the OC curve
+
+## A double sampling plan
+x <- OC2c(c(125,125), c(1,4), c(4,5), pd=seq(0,0.1,0.001))
+x
+
+plot(x) ## Plot the plan
+
+## Assess whether the plan can meet desired risk points
+assess(x, PRP=c(0.01, 0.95), CRP=c(0.05, 0.04))
+
+## A plan based on the Hypergeometric distribution
+x <- OC2c(10,1, type='hypergeom', N=5000, pd=seq(0,0.5, 0.025))
+plot(x)
+
+## The summary
+x <- OC2c(10,1, type='hypergeom', N=5000, pd=seq(0,0.5, 0.1))
+summary(x, full=TRUE)
+
+## Plotting against a function which generates P(defective)
+xm <- seq(-3, 3, 0.05) ## The mean of the underlying characteristic
+x <- OC2c(10, 1, pd=1-pnorm(0, mean=xm, sd=1))
+plot(xm, x) ## Plot P(accept) against mean
+
+n=10
+c=4
+pa=0
+paf=rep(0,100)
+p=seq(0,1,0.01)
+for(i in 1:101){
+  paf[i]=0
+  for (d in 0:c){
+    pa=dbinom(d,n,p[i])
+    paf[i]=paf[i]+pa
+
+
+  }
+
+}
+
+pa
+plot(p,paf)
+
+")
+  return(cat(code))
+
+}
+sqclab7 = function(){
+
+
+  code = cat("
+
+library(AcceptanceSampling)
+## A standard binomial sampling plan
+x <- OC2c(15,2)
+## Assess whether the plan can meet desired risk points
+assess(x, PRP=c(0.05, 0.95), CRP=c(0.1, 0.2))
+
+## A plan based on the Hypergeometric distribution
+x1 <- OC2c(10,1, type='hypergeom', N=5000, pd=seq(0,0.5, 0.1))# 0.1 Distance btw the 0 to 0.5
+plot(x1)
+
+assess(x1, PRP=c(0.05, 0.95), CRP=c(0.1, 0.2))
+
+#------------------------------------------------------------------------------#
+
+######################## A double sampling plan ################################
+
+#------------------------------------------------------------------------------#
+x3 <- OC2c(c(125,125), c(1,4), c(4,5), pd=seq(0,0.1,0.001))# c1=1,c2=4
+x3
+plot(x3)
+
+#fIND PLAN
+PRP=c(0.05,0.95)
+CRP=c(0.15,0.2)
+find.plan(PRP, CRP, type='binomial')# r= rejection number
+
+find.plan(PRP, CRP, type='hypergeom', N=1000)
+
+library(AcceptanceSampling)
+D=seq(0,200,5) #Number nonconforming in the lot of 1000
+pd<-D/1000     #Proportion nonconforming in the lot of 1000
+OC1<-phyper(1, m=D, n=1000-D, k=88, lower.tail=TRUE) #1 Acceptance umber ie c1
+OC1
+
+summary(OC1)
+
+R1<-phyper(3, m=D, n=1000-D, k=88, lower.tail=FALSE)#3 Rejection ir r or c2
+#Probability of rejecting after the first sample
+P<-OC1+R1
+ASN=88+88*(1-P);max(ASN)
+## [1] 131.2649
+plot(pd,ASN,type='l',ylim=c(5,150),xlab='Proportion nonconforming in the lot')
+abline(134,0,lty=2)
+text(.10,142,'single sample n=134')
+text(.10,70,'double sample n=(88,88)')
+grid()
+
+")
+  return(cat(code))
+
+}
+sqclab8 = function(){
+  code = cat("
+
+
+#If we have PRP=c(0.01,0.95),CRP=c(0.046,0.1),find n and k
+
+n<-((qnorm(.05)-qnorm(.90))/(qnorm(.01)-qnorm(.046)))^2
+n
+
+k<-(qnorm(.05) / sqrt(21))-qnorm(.01)
+k
+
+##variable sampling plan is cost efficient since only 21 sampes is needed while attribuele sampling plan need 172
+
+library(AcceptanceSampling)
+find.plan(PRP=c(0.01,0.95),CRP=c(0.046,0.1),type='normal')#variable sampling plan
+
+find.plan(PRP=c(0.01,0.95),CRP=c(0.046,0.1),type='binomial')#attribute sampling plan
+
+find.plan(PRP=c(0.01,0.95),CRP=c(0.046,0.1),type='normal',s.type = 'unknown')#when sigma is unknown we need 63 samples
+
+#plotting oc curve for variable sapling plan
+pd=seq(0,0.15,0.001)
+pln=OCvar(21,1.967,pd=seq(0,0.15,0.001))#pd is proportion defective when sd is known #variable sp
+plot(pd,pln@paccept,type='l',col=1,lty=1)
+pln1=OCvar(63,1.972,pd=seq(0,0.15,0.001))#whn sd is unknown#variable sp
+lines(pd,pln1@paccept,type='l',col=2,lty=2)
+pln2=OC2c(172,4,pd=seq(0,0.15,0.001))#atttribute sp binomial
+lines(pd,pln2@paccept,type='l',col=4,lty=4)
+legend(.04,.95,c('Attribute','variable, sigma unknown','Variable, sigma known'),lty=c(1,2,4),
+       col=c(1,2,4))
+grid()
+
+#code from bookdown
+library(AcceptanceSampling)
+PD<-seq(0,.15,.001)
+plnA<-OC2c(n=172,c=4,type='binomial',pd=PD)
+plnVku<-OCvar(n=63,k=1.974026,pd=PD,s.type='unknown')
+plnVkm<-OCvar(n=21,k=1.96411,pd=PD,s.type='known')
+#Plot all three OC curves on the same graph
+plot(PD,plnA@paccept,type='l',lty=1,col=1,xlab='Probability of nonconforming',ylab='OC')
+lines(PD,plnVku@paccept,type='l',lty=2,col=2)
+lines(PD,plnVkm@paccept,type='l',lty=4,col=4)
+legend(.04,.95,c('Attribute','Variable, sigma unknown','Variable, sigma known'),lty=c(1,2,4),
+       col=c(1,2,4))
+grid()
+
+
+")
+  return(cat(code))
+
+}
