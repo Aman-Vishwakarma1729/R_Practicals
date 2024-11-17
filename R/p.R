@@ -4448,3 +4448,61 @@ grid()
   return(cat(code))
 
 }
+sqclab9 = function(){
+  code = cat("
+
+#M-method
+
+## Q1
+n = 42
+k = 1.9052
+LSL = 225
+x_bar = 255
+sd = 15
+a = (n/2) - 1
+b = (n/2) - 1
+
+Z_l = (x_bar-LSL)/sd
+x = max(0, 0.5 - 0.5*Z_l*(sqrt(n)/(n-1)))
+P_l = pbeta(x,a,b)
+B_M = 0.5*(1-(k*sqrt(n)/(n-1)))
+M = pbeta(B_M,a,b)
+
+if(P_l<M){
+  print('Accept lot.')
+}else{
+  print('Reject lot.')
+}
+
+## Q2
+
+x_bar = 255
+n = 42
+k = 1.9052
+LSL = 225
+USL = 285
+
+a = b = n/2 - 1
+Z_l = (x_bar-LSL)/sd
+Z_u = (USL - x_bar)/sd
+x_l = max(0, 0.5 - 0.5*Z_l*(sqrt(n)/(n-1)))
+x_u = max(0, 0.5 - 0.5*Z_u*(sqrt(n)/(n-1)))
+
+P_l = pbeta(x_l,a,b)
+P_u = pbeta(x_u,a,b)
+P = P_l + P_u
+
+B_M = 0.5*(1-(k*sqrt(n)/(n-1)))
+M = pbeta(B_M,a,b)
+
+if(P<M){
+  print('Accept lot.')
+}else{
+  print('Reject lot.')
+}
+
+")
+  return(cat(code))
+
+}
+
